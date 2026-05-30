@@ -124,7 +124,7 @@ tr:hover td{background:#fafeff}
 
       <!-- NEW JOB -->
       <div class="sec active" id="sec-newjob">
-        <div class="page-title">Add new job</div>
+        <div class="page-title" id="page-title-newjob">Add new job</div>
         <div class="g2">
           <div>
             <div class="card">
@@ -358,6 +358,7 @@ window.PM_CONFIG={url:"https://script.google.com/macros/s/AKfycbyBulztEZERlrxxNL
 let CFG=window.PM_CONFIG||{};
 let USER=null;
 let JOBS=[],CLIENTS=[],INVOICES=[],STOCK=[],PRIORITY=[],COLOURSEP=[];
+let EDITING_JOB_ID=null;
 
 window.onload=()=>{
   showEl('login-screen');
@@ -473,6 +474,16 @@ function calcCost(){
   return total;
 }
 
+function resetJobForm(){
+  ['j-name','j-client','j-gsm','j-l','j-w','j-qty','j-ups','j-cf','j-cb','j-pord','j-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['fin-lam','fin-uv','fin-tex','fin-foil','fin-dc','fin-fuli','fin-pas'].forEach(id=>{const e=document.getElementById(id);if(e)e.checked=false;});
+  document.getElementById('j-hand').value='';
+  document.getElementById('cost-preview').innerHTML='<span style="color:#aaa">Fill in qty, size & GSM to see estimate</span>';
+  document.getElementById('save-btn').textContent='✓ Save & sync to Google Sheets';
+  document.getElementById('page-title-newjob').textContent='Add new job';
+  EDITING_JOB_ID=null;
+}
+
 async function addJob(){
   const name=gv('j-name').trim();
   if(!name){alert('Enter an order name');return;}
@@ -492,16 +503,19 @@ async function addJob(){
     addedBy:USER.name,created:new Date().toLocaleDateString('en-GB')
   };
   try{
-    await api('addJob',{job});
-    toast('Job saved & synced ✓ — colour sep & priority records auto-created');
+    if(EDITING_JOB_ID){
+      job.id=EDITING_JOB_ID;
+      await api('updateJob',{job});
+      toast('Job updated ✓');
+    } else {
+      await api('addJob',{job});
+      toast('Job saved & synced ✓ — colour sep & priority records auto-created');
+    }
     document.getElementById('save-status').textContent='Saved at '+new Date().toLocaleTimeString();
-    ['j-name','j-client','j-gsm','j-l','j-w','j-qty','j-ups','j-cf','j-cb','j-pord','j-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-    ['fin-lam','fin-uv','fin-tex','fin-foil','fin-dc','fin-fuli','fin-pas'].forEach(id=>{const e=document.getElementById(id);if(e)e.checked=false;});
-    document.getElementById('j-hand').value='';
-    document.getElementById('cost-preview').innerHTML='<span style="color:#aaa">Fill in qty, size & GSM to see estimate</span>';
+    resetJobForm();
     await fetchJobs();
   }catch(e){toast('Error: '+e.message,true);}
-  finally{btn.disabled=false;btn.textContent='✓ Save & sync to Google Sheets';}
+  finally{btn.disabled=false;btn.textContent=EDITING_JOB_ID?'✓ Update job':'✓ Save & sync to Google Sheets';}
 }
 
 async function fetchJobs(){
@@ -522,7 +536,7 @@ function renderJobs(){
   const isOwner=USER?.role==='owner';
   if(!filtered.length){el.innerHTML='<div class="empty">No jobs found</div>';return;}
   el.innerHTML=`<div class="tbl-wrap"><table>
-    <thead><tr><th>Order</th><th>Client</th><th>Priority</th><th>Qty</th><th>Exp pcs</th>${isOwner?'<th>Est cost</th>':''}<th>Finishing</th><th>Delivery</th><th>By</th><th>Status</th></tr></thead>
+    <thead><tr><th>Order</th><th>Client</th><th>Priority</th><th>Qty</th><th>Exp pcs</th>${isOwner?'<th>Est cost</th>':''}<th>Finishing</th><th>Delivery</th><th>By</th><th>Status</th><th></th></tr></thead>
     <tbody>${filtered.map(j=>`<tr>
       <td><strong style="font-weight:600">${j.name||''}</strong><br><span style="font-size:11px;color:#999">${j.paper||''} ${j.gsm||''}g ${j.l||''}×${j.w||''}cm</span></td>
       <td>${j.client||'—'}</td>
@@ -536,7 +550,43 @@ function renderJobs(){
       <td><select class="status-sel" onchange="updateJobStatus('${j.id}',this.value)">
         ${['Pending','Printing','Finishing','Done','Delivered'].map(s=>`<option ${j.status===s?'selected':''}>${s}</option>`).join('')}
       </select></td>
+      <td><button class="btn btn-ghost btn-sm" onclick="editJob('${j.id}')">✎ Edit</button></td>
     </tr>`).join('')}</tbody></table></div>`;
+}
+
+function editJob(id){
+  const j=JOBS.find(x=>x.id===id);
+  if(!j)return;
+  EDITING_JOB_ID=id;
+  document.getElementById('j-name').value=j.name||'';
+  document.getElementById('j-client').value=j.client||'';
+  document.getElementById('j-paper').value=j.paper||'TC';
+  document.getElementById('j-gsm').value=j.gsm||'';
+  document.getElementById('j-no').value=j.no||'N';
+  document.getElementById('j-l').value=j.l||'';
+  document.getElementById('j-w').value=j.w||'';
+  document.getElementById('j-qty').value=j.qty||'';
+  document.getElementById('j-ups').value=j.ups||'';
+  document.getElementById('j-cf').value=j.cf||'';
+  document.getElementById('j-cb').value=j.cb||'';
+  document.getElementById('j-pord').value=j.pord||'';
+  document.getElementById('j-date').value=j.date||'';
+  document.getElementById('j-priority').value=j.priority||'Normal';
+  document.getElementById('j-notes').value=j.notes||'';
+  document.getElementById('j-hand').value=j.hand||'';
+  const t=v=>v===true||v==='TRUE'||v==='true';
+  document.getElementById('fin-lam').checked=t(j.lam);
+  document.getElementById('fin-uv').checked=t(j.uv);
+  document.getElementById('fin-tex').checked=t(j.tex);
+  document.getElementById('fin-foil').checked=t(j.foil);
+  document.getElementById('fin-dc').checked=t(j.dc);
+  document.getElementById('fin-fuli').checked=t(j.fuli);
+  document.getElementById('fin-pas').checked=t(j.pas);
+  calcCost();
+  document.getElementById('save-btn').textContent='✓ Update job';
+  document.getElementById('page-title-newjob').textContent='Edit job';
+  go('newjob');
+  window.scrollTo(0,0);
 }
 
 async function updateJobStatus(id,status){
