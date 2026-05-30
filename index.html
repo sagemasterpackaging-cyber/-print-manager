@@ -2,251 +2,168 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Print Manager</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f5f7;color:#222;font-size:14px;min-height:100vh}
-a{color:#185fa5}
-
-/* ── Login ── */
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5}
-.login-box{background:#fff;border:1px solid #dde1e7;border-radius:12px;padding:2.5rem 2rem;width:360px;box-shadow:0 2px 12px rgba(0,0,0,0.07)}
-.login-logo{font-size:28px;margin-bottom:6px}
-.login-box h1{font-size:20px;font-weight:700;margin-bottom:4px}
-.login-box .sub{font-size:13px;color:#666;margin-bottom:1.5rem}
-
-/* ── App shell ── */
-#app{display:none;min-height:100vh;flex-direction:column}
-.topbar{background:#fff;border-bottom:1px solid #e0e3e8;padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.topbar-left{display:flex;align-items:center;gap:10px}
-.topbar-logo{font-size:18px}
-.topbar-title{font-size:15px;font-weight:700;color:#222}
+#login-screen,#setup-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5}
+.auth-box{background:#fff;border:1px solid #dde1e7;border-radius:12px;padding:2.5rem 2rem;width:380px}
+.auth-box h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.auth-box .sub{font-size:13px;color:#666;margin-bottom:1.5rem}
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid #e0e3e8;padding:0 1.5rem;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar-title{font-size:15px;font-weight:700}
 .topbar-right{display:flex;align-items:center;gap:10px;font-size:13px}
 .sync-badge{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:500}
-.s-ok{background:#eaf3de;color:#3b6d11}
-.s-err{background:#fcebeb;color:#a32d2d}
-.s-ing{background:#e6f1fb;color:#185fa5}
-.user-chip{background:#f0f2f5;padding:4px 12px;border-radius:20px;font-size:12px;color:#555}
-
+.s-ok{background:#eaf3de;color:#3b6d11}.s-err{background:#fcebeb;color:#a32d2d}.s-ing{background:#e6f1fb;color:#185fa5}
 .layout{display:flex;flex:1}
-
-/* ── Sidebar ── */
-.sidebar{width:200px;background:#fff;border-right:1px solid #e0e3e8;padding:12px 0;display:flex;flex-direction:column;min-height:calc(100vh - 52px)}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;cursor:pointer;color:#555;border-left:3px solid transparent;transition:all 0.1s;user-select:none}
+.sidebar{width:195px;background:#fff;border-right:1px solid #e0e3e8;padding:10px 0;display:flex;flex-direction:column;min-height:calc(100vh - 50px)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;cursor:pointer;color:#555;border-left:3px solid transparent;user-select:none}
 .nav-item:hover{background:#f4f5f7;color:#222}
 .nav-item.active{background:#edf4ff;color:#185fa5;border-left-color:#185fa5;font-weight:600}
-.nav-icon{font-size:16px;width:22px;text-align:center}
-.sidebar-sep{height:1px;background:#f0f0f0;margin:6px 12px}
-
-/* ── Main ── */
-.main{flex:1;padding:1.5rem;overflow-y:auto;max-width:1200px}
+.nav-sep{height:1px;background:#f0f0f0;margin:5px 12px}
+.nav-icon{font-size:15px;width:20px;text-align:center}
+.main{flex:1;padding:1.25rem 1.5rem;overflow-y:auto}
 .sec{display:none}.sec.active{display:block}
-.page-title{font-size:17px;font-weight:700;margin-bottom:1.25rem;color:#111}
-
-/* ── Cards & grids ── */
+.page-title{font-size:17px;font-weight:700;margin-bottom:1.25rem}
 .card{background:#fff;border:1px solid #e0e3e8;border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1rem}
-.metric{background:#f8f9fb;border-radius:8px;padding:1rem 1.25rem}
-.metric-label{font-size:12px;color:#888;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em}
-.metric-value{font-size:24px;font-weight:700}
-
-/* ── Forms ── */
+.card-title{font-size:13px;font-weight:700;margin-bottom:10px;color:#333}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.metric{background:#f8f9fb;border-radius:8px;padding:1rem}
+.metric-label{font-size:11px;color:#888;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.metric-value{font-size:22px;font-weight:700}
 .frow{display:flex;gap:10px;margin-bottom:10px}
 .ff{flex:1;min-width:0}
 .ff label{display:block;font-size:12px;color:#666;margin-bottom:3px;font-weight:500}
-input[type=text],input[type=number],input[type=date],input[type=password],select,textarea{width:100%;padding:8px 10px;border:1px solid #d8dbe2;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;color:#222;transition:border 0.15s}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,0.12)}
+input,select,textarea{width:100%;padding:7px 10px;border:1px solid #d8dbe2;border-radius:6px;font-size:13px;font-family:inherit;background:#fff;color:#222}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#4a90d9;box-shadow:0 0 0 3px rgba(74,144,217,.1)}
 textarea{resize:vertical}
-.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:10px}
-.cb-item{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;padding:3px 0;color:#444}
-.cb-item input{width:auto;cursor:pointer}
-
-/* ── Buttons ── */
-.btn{padding:8px 18px;border-radius:7px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500;transition:all 0.15s}
+.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:10px}
+.cb-item{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;padding:3px 0}
+.cb-item input{width:auto}
+.btn{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
 .btn-primary{background:#185fa5;color:#fff;border:none}
-.btn-primary:hover{background:#1456939a}
+.btn-primary:hover{background:#14508a}
 .btn-primary:disabled{background:#93b8d9;cursor:not-allowed}
 .btn-ghost{background:none;border:1px solid #d0d5dd;color:#444}
 .btn-ghost:hover{background:#f4f5f7}
-.btn-sm{padding:5px 12px;font-size:12px}
-.btn-danger{background:#fff;border:1px solid #f09595;color:#a32d2d}
-
-/* ── Table ── */
-.tbl-wrap{overflow-x:auto}
+.btn-sm{padding:4px 11px;font-size:12px}
+.btn-warn{background:#fff;border:1px solid #ef9f27;color:#633806}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:9px 10px;font-size:11px;font-weight:700;color:#888;border-bottom:2px solid #eee;background:#fafbfc;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap}
-td{padding:9px 10px;border-bottom:1px solid #f2f3f5;vertical-align:middle}
+th{text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#888;border-bottom:2px solid #eee;background:#fafbfc;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid #f2f3f5;vertical-align:middle}
 tr:hover td{background:#fafeff}
-
-/* ── Badges ── */
-.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600}
-.b-Pending  {background:#FAEEDA;color:#854F0B}
-.b-Printing {background:#E6F1FB;color:#185FA5}
+.tbl-wrap{overflow-x:auto}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+.b-Pending{background:#FAEEDA;color:#854F0B}
+.b-Printing{background:#E6F1FB;color:#185FA5}
 .b-Finishing{background:#EEEDFE;color:#534AB7}
-.b-Done     {background:#EAF3DE;color:#3B6D11}
+.b-Done{background:#EAF3DE;color:#3B6D11}
 .b-Delivered{background:#E1F5EE;color:#0F6E56}
-.b-credit   {background:#FAEEDA;color:#854F0B}
-.b-clear    {background:#EAF3DE;color:#3B6D11}
-
-/* ── Cost preview ── */
-.cost-box{background:#f8f9fb;border-radius:8px;padding:12px 14px;font-size:13px;margin-top:8px}
+.b-Urgent{background:#fcebeb;color:#a32d2d}
+.b-High{background:#FAEEDA;color:#854F0B}
+.b-Normal{background:#E6F1FB;color:#185FA5}
+.b-Low{background:#f1f0e8;color:#5f5e5a}
+.b-credit{background:#FAEEDA;color:#854F0B}
+.b-clear{background:#EAF3DE;color:#3B6D11}
+.b-low-stock{background:#fcebeb;color:#a32d2d}
+.cost-box{background:#f8f9fb;border-radius:7px;padding:11px 13px;font-size:13px;margin-top:8px}
 .cost-line{display:flex;justify-content:space-between;padding:3px 0;color:#555}
-.cost-total{font-weight:700;border-top:1px solid #e0e3e8;margin-top:6px;padding-top:6px;color:#111;font-size:14px}
-
-/* ── Challan ── */
-.challan-wrap{max-width:580px;margin:0 auto}
-@media print{
-  .topbar,.sidebar,.no-print{display:none!important}
-  .main{padding:0;max-width:100%}
-  .challan-wrap{max-width:100%}
-}
-
-/* ── Toast ── */
-#toast{position:fixed;bottom:28px;right:28px;background:#1e1e2e;color:#fff;padding:11px 20px;border-radius:8px;font-size:13px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;max-width:320px}
+.cost-total{font-weight:700;border-top:1px solid #e0e3e8;margin-top:5px;padding-top:5px;font-size:14px}
+.challan-doc{max-width:570px;margin:0 auto}
+@media print{.topbar,.sidebar,.no-print{display:none!important}.main{padding:0}.challan-doc{max-width:100%}}
+#toast{position:fixed;bottom:24px;right:24px;background:#1e1e2e;color:#fff;padding:10px 18px;border-radius:7px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
 #toast.show{opacity:1}
 #toast.err{background:#a32d2d}
-
-/* ── Setup screen ── */
-#setup-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5}
-.setup-box{background:#fff;border:1px solid #dde1e7;border-radius:12px;padding:2.5rem 2rem;width:440px}
-.setup-box h1{font-size:18px;font-weight:700;margin-bottom:6px}
-.setup-box p{font-size:13px;color:#666;margin-bottom:1.25rem;line-height:1.6}
-.step-pill{display:inline-block;background:#185fa5;color:#fff;font-size:11px;padding:2px 9px;border-radius:20px;margin-bottom:8px;font-weight:600}
-
-/* ── Empty state ── */
-.empty{text-align:center;padding:3rem;color:#aaa}
-.empty-icon{font-size:36px;margin-bottom:10px}
-
-/* ── Section subtitle ── */
-.card-title{font-size:13px;font-weight:700;margin-bottom:12px;color:#333}
-
-/* ── Status select ── */
-.status-sel{font-size:12px;border:1px solid #d8dbe2;padding:4px 8px;border-radius:5px;background:#fff;cursor:pointer}
+.empty{text-align:center;padding:2.5rem;color:#aaa}
+.status-sel{font-size:12px;border:1px solid #d8dbe2;padding:3px 7px;border-radius:5px;background:#fff;cursor:pointer}
+.alert-warn{background:#FAEEDA;border:1px solid #EF9F27;border-radius:7px;padding:9px 13px;font-size:13px;margin-bottom:10px}
 </style>
 </head>
 <body>
 
-<!-- ══ SETUP SCREEN ══ -->
 <div id="setup-screen">
-  <div class="setup-box">
-    <div style="font-size:28px;margin-bottom:8px">🖨️</div>
-    <h1>Welcome to Print Manager</h1>
-    <p>First-time setup. Paste your Google Apps Script URL below to connect to your Google Sheet.</p>
-    <div class="step-pill">Step 1 of 1</div>
-    <div class="ff" style="margin-bottom:10px">
-      <label>Google Apps Script Web App URL</label>
-      <input type="text" id="su-url" placeholder="https://script.google.com/macros/s/...">
-    </div>
-    <div class="ff" style="margin-bottom:16px">
-      <label>Owner PIN (4 digits — only you know this)</label>
-      <input type="password" id="su-pin" placeholder="e.g. 1234" maxlength="4">
-    </div>
+  <div class="auth-box">
+    <div style="font-size:26px;margin-bottom:8px">🖨️</div>
+    <h1>Print Manager Setup</h1>
+    <div class="sub">One-time setup — paste your Google Apps Script URL</div>
+    <div class="ff" style="margin-bottom:10px"><label>Apps Script Web App URL</label><input type="text" id="su-url" placeholder="https://script.google.com/macros/s/..."></div>
+    <div class="ff" style="margin-bottom:16px"><label>Owner PIN (4 digits)</label><input type="password" id="su-pin" placeholder="e.g. 1234" maxlength="4"></div>
     <button class="btn btn-primary" style="width:100%;padding:11px" onclick="saveSetup()">Save &amp; continue →</button>
-    <p style="margin-top:12px;font-size:12px;color:#aaa">You only do this once. The URL is saved in your browser.</p>
   </div>
 </div>
 
-<!-- ══ LOGIN SCREEN ══ -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">🖨️</div>
+  <div class="auth-box">
+    <div style="font-size:26px;margin-bottom:8px">🖨️</div>
     <h1>Print Manager</h1>
     <div class="sub">Sign in to continue</div>
-    <div class="ff" style="margin-bottom:10px">
-      <label>Your name</label>
-      <input type="text" id="ln-name" placeholder="e.g. Rohan" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="ff" style="margin-bottom:10px">
-      <label>Role</label>
-      <select id="ln-role" onchange="togglePin()">
-        <option value="employee">Employee</option>
-        <option value="owner">Owner</option>
-      </select>
-    </div>
-    <div id="pin-wrap" class="ff" style="display:none;margin-bottom:14px">
-      <label>Owner PIN</label>
-      <input type="password" id="ln-pin" placeholder="4-digit PIN" maxlength="4" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn btn-primary" style="width:100%;padding:11px;margin-bottom:12px" onclick="doLogin()">Sign in →</button>
-    <div style="text-align:center">
-      <a href="#" style="font-size:12px;color:#aaa;text-decoration:none" onclick="showSetup()">⚙ Change API URL / PIN</a>
-    </div>
+    <div class="ff" style="margin-bottom:10px"><label>Your name</label><input type="text" id="ln-name" placeholder="e.g. Rohan" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="ff" style="margin-bottom:10px"><label>Role</label><select id="ln-role" onchange="togglePin()"><option value="employee">Employee</option><option value="owner">Owner</option></select></div>
+    <div id="pin-wrap" class="ff" style="display:none;margin-bottom:14px"><label>Owner PIN</label><input type="password" id="ln-pin" maxlength="4" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-primary" style="width:100%;padding:11px;margin-bottom:10px" onclick="doLogin()">Sign in →</button>
+    <div style="text-align:center"><a href="#" style="font-size:12px;color:#aaa;text-decoration:none" onclick="showSetup()">⚙ Change API URL</a></div>
   </div>
 </div>
 
-<!-- ══ MAIN APP ══ -->
 <div id="app">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="topbar-logo">🖨️</span>
-      <span class="topbar-title">Print Manager</span>
-    </div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">🖨️</span><span class="topbar-title">Print Manager</span></div>
     <div class="topbar-right">
       <span id="sync-badge" class="sync-badge s-ok">● Synced</span>
-      <span id="user-chip" class="user-chip"></span>
+      <span id="user-chip" style="background:#f0f2f5;padding:4px 12px;border-radius:20px;font-size:12px;color:#555"></span>
       <button class="btn btn-ghost btn-sm" onclick="doLogout()">Sign out</button>
     </div>
   </div>
-
   <div class="layout">
     <div class="sidebar">
-      <div class="nav-item active" id="nav-newjob"   onclick="go('newjob')">  <span class="nav-icon">＋</span> New job</div>
-      <div class="nav-item"        id="nav-jobs"     onclick="go('jobs')">    <span class="nav-icon">📋</span> All jobs</div>
-      <div class="nav-item"        id="nav-challan"  onclick="go('challan')"> <span class="nav-icon">📄</span> Challan</div>
-      <div class="sidebar-sep"></div>
-      <div class="nav-item owner-only" id="nav-clients"  onclick="go('clients')"> <span class="nav-icon">👥</span> Clients</div>
-      <div class="nav-item owner-only" id="nav-dash"     onclick="go('dash')">    <span class="nav-icon">📊</span> Dashboard</div>
-      <div class="nav-item owner-only" id="nav-settings" onclick="go('settings')"><span class="nav-icon">⚙</span> Settings</div>
+      <div class="nav-item active" id="nav-newjob"   onclick="go('newjob')">  <span class="nav-icon">＋</span>New job</div>
+      <div class="nav-item"        id="nav-jobs"     onclick="go('jobs')">    <span class="nav-icon">📋</span>All jobs</div>
+      <div class="nav-item"        id="nav-priority" onclick="go('priority')"><span class="nav-icon">🔥</span>Priority queue</div>
+      <div class="nav-item"        id="nav-coloursep"onclick="go('coloursep')"><span class="nav-icon">🎨</span>Colour sep</div>
+      <div class="nav-item"        id="nav-challan"  onclick="go('challan')"> <span class="nav-icon">📄</span>Challans</div>
+      <div class="nav-sep"></div>
+      <div class="nav-item owner-only" id="nav-clients"  onclick="go('clients')"> <span class="nav-icon">👥</span>Clients</div>
+      <div class="nav-item owner-only" id="nav-invoices" onclick="go('invoices')"><span class="nav-icon">💰</span>Invoices</div>
+      <div class="nav-item owner-only" id="nav-stock"    onclick="go('stock')">   <span class="nav-icon">📦</span>Stock</div>
+      <div class="nav-item owner-only" id="nav-dash"     onclick="go('dash')">    <span class="nav-icon">📊</span>Dashboard</div>
+      <div class="nav-item owner-only" id="nav-settings" onclick="go('settings')"><span class="nav-icon">⚙</span>Settings</div>
     </div>
-
     <div class="main">
 
       <!-- NEW JOB -->
       <div class="sec active" id="sec-newjob">
         <div class="page-title">Add new job</div>
-        <div class="grid2">
+        <div class="g2">
           <div>
             <div class="card">
               <div class="card-title">Job details</div>
+              <div class="frow"><div class="ff"><label>Order name *</label><input type="text" id="j-name" placeholder="e.g. KANCHANJUNGA BOX"></div><div class="ff"><label>Client</label><input type="text" id="j-client" placeholder="e.g. REDBULL" list="cl-dl"><datalist id="cl-dl"></datalist></div></div>
               <div class="frow">
-                <div class="ff"><label>Order name *</label><input type="text" id="j-name" placeholder="e.g. KANCHANJUNGA BOX"></div>
-                <div class="ff"><label>Client</label><input type="text" id="j-client" placeholder="e.g. REDBULL" list="cl-datalist"><datalist id="cl-datalist"></datalist></div>
-              </div>
-              <div class="frow">
-                <div class="ff"><label>Paper type</label>
-                  <select id="j-paper">
-                    <option value="TC">TC (Tri-Coated)</option>
-                    <option value="I-DUP">I-DUP (Ivory Duplex)</option>
-                    <option value="N-DUP">N-DUP (Normal Duplex)</option>
-                    <option value="STIC">STIC (Sticker)</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
+                <div class="ff"><label>Paper</label><select id="j-paper"><option value="TC">TC (Tri-Coated)</option><option value="I-DUP">I-DUP (Ivory Duplex)</option><option value="N-DUP">N-DUP (Normal Duplex)</option><option value="STIC">STIC (Sticker)</option><option value="Other">Other</option></select></div>
                 <div class="ff"><label>GSM</label><input type="number" id="j-gsm" placeholder="270" oninput="calcCost()"></div>
-                <div class="ff"><label>N/O</label>
-                  <select id="j-no"><option value="N">N (New)</option><option value="O">O (Old)</option></select>
-                </div>
+                <div class="ff"><label>N/O</label><select id="j-no"><option value="N">N (New)</option><option value="O">O (Old)</option></select></div>
               </div>
               <div class="frow">
-                <div class="ff"><label>Length (cm)</label><input type="number" id="j-l" placeholder="18" oninput="calcCost()"></div>
-                <div class="ff"><label>Width (cm)</label><input type="number" id="j-w" placeholder="25" oninput="calcCost()"></div>
+                <div class="ff"><label>L (cm)</label><input type="number" id="j-l" placeholder="18" oninput="calcCost()"></div>
+                <div class="ff"><label>W (cm)</label><input type="number" id="j-w" placeholder="25" oninput="calcCost()"></div>
                 <div class="ff"><label>Qty (sheets)</label><input type="number" id="j-qty" placeholder="10000" oninput="calcCost()"></div>
                 <div class="ff"><label>Ups</label><input type="number" id="j-ups" placeholder="6"></div>
               </div>
               <div class="frow">
-                <div class="ff"><label>Colours front</label><input type="number" id="j-cf" placeholder="4" min="0" max="4" oninput="calcCost()"></div>
-                <div class="ff"><label>Colours back</label><input type="number" id="j-cb" placeholder="1" min="0" max="4" oninput="calcCost()"></div>
+                <div class="ff"><label>Colours front</label><input type="number" id="j-cf" placeholder="4" oninput="calcCost()"></div>
+                <div class="ff"><label>Colours back</label><input type="number" id="j-cb" placeholder="1" oninput="calcCost()"></div>
                 <div class="ff"><label>Plates (P-ORD)</label><input type="number" id="j-pord" placeholder="4"></div>
                 <div class="ff"><label>Delivery date</label><input type="date" id="j-date"></div>
               </div>
               <div class="frow">
-                <div class="ff"><label>Notes / print details</label><textarea id="j-notes" rows="2" placeholder="e.g. 4 COLOUR DUPLEX"></textarea></div>
+                <div class="ff"><label>Priority</label><select id="j-priority"><option value="Normal">Normal</option><option value="High">High</option><option value="Urgent">Urgent</option><option value="Low">Low</option></select></div>
+                <div class="ff"><label>Notes</label><input type="text" id="j-notes" placeholder="e.g. 4 COLOUR DUPLEX"></div>
               </div>
             </div>
-
             <div class="card">
               <div class="card-title">Finishing</div>
               <div class="cb-grid">
@@ -258,8 +175,7 @@ tr:hover td{background:#fafeff}
                 <label class="cb-item"><input type="checkbox" id="fin-fuli"> Full inside (FULI)</label>
                 <label class="cb-item"><input type="checkbox" id="fin-pas"> Pasting (PAS)</label>
               </div>
-              <div class="ff">
-                <label>Hand work</label>
+              <div class="ff"><label>Hand work</label>
                 <select id="j-hand" onchange="calcCost()">
                   <option value="">None</option>
                   <option value="10">Single bag making — Rs 10</option>
@@ -280,29 +196,16 @@ tr:hover td{background:#fafeff}
               </div>
             </div>
           </div>
-
           <div>
             <div class="card">
               <div class="card-title">Cost estimate (auto)</div>
-              <div class="frow">
-                <div class="ff"><label>Paper (Rs/kg)</label><input type="number" id="r-paper" value="130" oninput="calcCost()"></div>
-                <div class="ff"><label>Plate cost (Rs)</label><input type="number" id="r-plate" value="1500" oninput="calcCost()"></div>
-              </div>
-              <div class="frow">
-                <div class="ff"><label>Print front (Rs/1000)</label><input type="number" id="r-pf" value="900" oninput="calcCost()"></div>
-                <div class="ff"><label>Print back (Rs/1000)</label><input type="number" id="r-pb" value="450" oninput="calcCost()"></div>
-              </div>
-              <div class="frow">
-                <div class="ff"><label>LAM (Rs/sqft)</label><input type="number" id="r-lam" value="3" oninput="calcCost()"></div>
-                <div class="ff"><label>UV (Rs/sqft)</label><input type="number" id="r-uv" value="2" oninput="calcCost()"></div>
-              </div>
+              <div class="frow"><div class="ff"><label>Paper (Rs/kg)</label><input type="number" id="r-paper" value="130" oninput="calcCost()"></div><div class="ff"><label>Plate (Rs)</label><input type="number" id="r-plate" value="1500" oninput="calcCost()"></div></div>
+              <div class="frow"><div class="ff"><label>Print front (Rs/1000)</label><input type="number" id="r-pf" value="900" oninput="calcCost()"></div><div class="ff"><label>Print back (Rs/1000)</label><input type="number" id="r-pb" value="450" oninput="calcCost()"></div></div>
+              <div class="frow"><div class="ff"><label>LAM (Rs/sqft)</label><input type="number" id="r-lam" value="3" oninput="calcCost()"></div><div class="ff"><label>UV (Rs/sqft)</label><input type="number" id="r-uv" value="2" oninput="calcCost()"></div></div>
               <div id="cost-preview" class="cost-box"><span style="color:#aaa">Fill in qty, size &amp; GSM to see estimate</span></div>
             </div>
-
-            <button class="btn btn-primary" id="save-btn" style="width:100%;padding:13px;font-size:14px" onclick="addJob()">
-              ✓ Save job &amp; sync to Google Sheets
-            </button>
-            <div id="save-status" style="text-align:center;font-size:12px;color:#888;margin-top:8px;min-height:18px"></div>
+            <button class="btn btn-primary" id="save-btn" style="width:100%;padding:12px;font-size:14px" onclick="addJob()">✓ Save &amp; sync to Google Sheets</button>
+            <div id="save-status" style="text-align:center;font-size:12px;color:#888;margin-top:7px;min-height:16px"></div>
           </div>
         </div>
       </div>
@@ -311,29 +214,46 @@ tr:hover td{background:#fafeff}
       <div class="sec" id="sec-jobs">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
           <div class="page-title" style="margin:0">All jobs</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <select id="f-status" onchange="renderJobs()" style="width:auto">
-              <option value="">All statuses</option>
-              <option>Pending</option><option>Printing</option>
-              <option>Finishing</option><option>Done</option><option>Delivered</option>
-            </select>
-            <input type="text" id="f-search" placeholder="Search name or client…" oninput="renderJobs()" style="width:200px">
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <select id="f-status" onchange="renderJobs()" style="width:auto"><option value="">All statuses</option><option>Pending</option><option>Printing</option><option>Finishing</option><option>Done</option><option>Delivered</option></select>
+            <input type="text" id="f-search" placeholder="Search…" oninput="renderJobs()" style="width:170px">
             <button class="btn btn-ghost btn-sm" onclick="fetchJobs()">↻ Refresh</button>
           </div>
         </div>
         <div id="jobs-area"></div>
       </div>
 
+      <!-- PRIORITY QUEUE -->
+      <div class="sec" id="sec-priority">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div class="page-title" style="margin:0">Priority queue</div>
+          <button class="btn btn-ghost btn-sm" onclick="fetchPriority()">↻ Refresh</button>
+        </div>
+        <div id="priority-area"></div>
+      </div>
+
+      <!-- COLOUR SEP -->
+      <div class="sec" id="sec-coloursep">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div class="page-title" style="margin:0">Colour separation</div>
+          <button class="btn btn-ghost btn-sm" onclick="fetchColourSep()">↻ Refresh</button>
+        </div>
+        <div class="alert-warn" style="margin-bottom:1rem">🎨 Each new job auto-creates a colour sep record. Fill in the C/M/Y/K values below and mark as Done.</div>
+        <div id="coloursep-area"></div>
+      </div>
+
       <!-- CHALLAN -->
       <div class="sec" id="sec-challan">
         <div class="page-title">Delivery challan</div>
         <div class="card no-print" style="margin-bottom:1rem">
-          <div class="frow" style="flex-wrap:wrap">
-            <div class="ff" style="min-width:180px"><label>Select job</label><select id="ch-job" onchange="renderChallan()"></select></div>
+          <div class="frow" style="flex-wrap:wrap;align-items:flex-end">
+            <div class="ff" style="min-width:200px"><label>Select job</label><select id="ch-job" onchange="renderChallan()"></select></div>
             <div class="ff" style="max-width:130px"><label>Challan no.</label><input type="text" id="ch-no" placeholder="CH-001" oninput="renderChallan()"></div>
-            <div class="ff" style="max-width:130px"><label>Delivery qty</label><input type="number" id="ch-qty" placeholder="auto" oninput="renderChallan()"></div>
-            <div class="ff" style="display:flex;align-items:flex-end;max-width:120px">
-              <button class="btn btn-primary" style="width:100%" onclick="window.print()">🖨 Print</button>
+            <div class="ff" style="max-width:120px"><label>Delivery qty</label><input type="number" id="ch-qty" oninput="renderChallan()"></div>
+            <div class="ff" style="max-width:140px"><label>Received by</label><input type="text" id="ch-recv" placeholder="Name"></div>
+            <div style="display:flex;gap:8px;padding-top:18px">
+              <button class="btn btn-primary" onclick="saveChallan()">Save challan</button>
+              <button class="btn btn-ghost" onclick="window.print()">🖨 Print</button>
             </div>
           </div>
         </div>
@@ -342,11 +262,12 @@ tr:hover td{background:#fafeff}
 
       <!-- CLIENTS -->
       <div class="sec owner-only" id="sec-clients">
-        <div class="page-title">Clients &amp; ledger</div>
-        <div class="grid2" style="margin-bottom:1rem">
+        <div class="page-title">Clients</div>
+        <div class="g2" style="margin-bottom:1rem">
           <div class="card">
             <div class="card-title">Add / update client</div>
-            <div class="frow"><div class="ff"><label>Name *</label><input type="text" id="cl-name" placeholder="e.g. REDBULL"></div><div class="ff"><label>Phone</label><input type="text" id="cl-phone" placeholder="98XXXXXXXX"></div></div>
+            <div class="frow"><div class="ff"><label>Name *</label><input type="text" id="cl-name" placeholder="e.g. REDBULL"></div><div class="ff"><label>Phone</label><input type="text" id="cl-phone"></div></div>
+            <div class="frow"><div class="ff"><label>Email</label><input type="text" id="cl-email"></div><div class="ff"><label>Address</label><input type="text" id="cl-addr"></div></div>
             <div class="frow">
               <div class="ff"><label>Opening balance (Rs)</label><input type="number" id="cl-bal" placeholder="0"></div>
               <div class="ff"><label>Type</label><select id="cl-btype"><option value="credit">Credit (they owe us)</option><option value="debit">Debit (we owe them)</option></select></div>
@@ -354,32 +275,75 @@ tr:hover td{background:#fafeff}
             <button class="btn btn-primary" style="width:100%" onclick="saveClient()">Save client</button>
           </div>
           <div class="card">
-            <div class="card-title">Add transaction</div>
-            <div class="frow"><div class="ff"><label>Client</label><select id="tx-cl" style="width:100%"></select></div></div>
-            <div class="frow">
-              <div class="ff"><label>Amount (Rs)</label><input type="number" id="tx-amt"></div>
-              <div class="ff"><label>Type</label><select id="tx-type"><option value="invoice">Invoice (they owe more)</option><option value="payment">Payment received</option></select></div>
-            </div>
-            <div class="frow">
-              <div class="ff"><label>Note</label><input type="text" id="tx-note" placeholder="e.g. REDBULL BAG job"></div>
-              <div class="ff"><label>Date</label><input type="date" id="tx-date"></div>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="saveTx()">Add transaction</button>
+            <div class="card-title">Summary</div>
+            <div id="client-summary"><div class="empty">Loading…</div></div>
           </div>
         </div>
         <div id="clients-area"></div>
       </div>
 
+      <!-- INVOICES -->
+      <div class="sec owner-only" id="sec-invoices">
+        <div class="page-title">Invoices &amp; payments</div>
+        <div class="g2" style="margin-bottom:1rem">
+          <div class="card">
+            <div class="card-title">Add invoice / payment</div>
+            <div class="frow"><div class="ff"><label>Client</label><select id="inv-cl" style="width:100%"></select></div><div class="ff"><label>Related job (optional)</label><select id="inv-job" style="width:100%"></select></div></div>
+            <div class="frow">
+              <div class="ff"><label>Type</label><select id="inv-type"><option value="invoice">Invoice (they owe more)</option><option value="payment">Payment received</option></select></div>
+              <div class="ff"><label>Amount (Rs)</label><input type="number" id="inv-amt"></div>
+            </div>
+            <div class="frow"><div class="ff"><label>Notes</label><input type="text" id="inv-notes" placeholder="e.g. 50% advance for REDBULL BAG"></div><div class="ff"><label>Date</label><input type="date" id="inv-date"></div></div>
+            <button class="btn btn-primary" style="width:100%" onclick="saveInvoice()">Save</button>
+          </div>
+          <div class="card">
+            <div class="card-title">Recent transactions</div>
+            <div id="inv-recent"><div class="empty">Loading…</div></div>
+          </div>
+        </div>
+        <div id="invoices-area"></div>
+      </div>
+
+      <!-- STOCK -->
+      <div class="sec owner-only" id="sec-stock">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div class="page-title" style="margin:0">Stock</div>
+          <button class="btn btn-ghost btn-sm" onclick="fetchStock()">↻ Refresh</button>
+        </div>
+        <div class="g2" style="margin-bottom:1rem">
+          <div class="card">
+            <div class="card-title">Add / update item</div>
+            <div class="frow"><div class="ff"><label>Item name *</label><input type="text" id="st-name" placeholder="e.g. TC 270 GSM"></div><div class="ff"><label>Category</label><select id="st-cat"><option>Paper</option><option>Ink</option><option>Plate</option><option>Lamination</option><option>UV</option><option>Foil</option><option>Other</option></select></div></div>
+            <div class="frow"><div class="ff"><label>Unit</label><select id="st-unit"><option>kg</option><option>sheets</option><option>rolls</option><option>pcs</option><option>litre</option></select></div><div class="ff"><label>Opening qty</label><input type="number" id="st-openqty" placeholder="0"></div><div class="ff"><label>Reorder level</label><input type="number" id="st-reorder" placeholder="50"></div></div>
+            <div class="ff" style="margin-bottom:10px"><label>Notes</label><input type="text" id="st-notes" placeholder="Supplier, grade, etc."></div>
+            <button class="btn btn-primary" style="width:100%" onclick="saveStockItem()">Save item</button>
+          </div>
+          <div class="card">
+            <div class="card-title">Adjust stock</div>
+            <div class="frow"><div class="ff"><label>Item</label><select id="adj-item" style="width:100%"></select></div></div>
+            <div class="frow">
+              <div class="ff"><label>Qty</label><input type="number" id="adj-qty" placeholder="0"></div>
+              <div class="ff"><label>Operation</label><select id="adj-op"><option value="add">Add (received)</option><option value="remove">Remove (used)</option></select></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="adjustStock()">Update stock</button>
+          </div>
+        </div>
+        <div id="stock-area"></div>
+      </div>
+
       <!-- DASHBOARD -->
       <div class="sec owner-only" id="sec-dash">
-        <div class="page-title">Dashboard</div>
-        <div id="dash-area"><div class="empty"><div class="empty-icon">📊</div>Loading...</div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div class="page-title" style="margin:0">Dashboard</div>
+          <button class="btn btn-ghost btn-sm" onclick="fetchDash()">↻ Refresh</button>
+        </div>
+        <div id="dash-area"><div class="empty">Loading…</div></div>
       </div>
 
       <!-- SETTINGS -->
       <div class="sec owner-only" id="sec-settings">
         <div class="page-title">Settings</div>
-        <div class="card" style="max-width:500px">
+        <div class="card" style="max-width:480px">
           <div class="card-title">Google Sheets connection</div>
           <div class="ff" style="margin-bottom:10px"><label>Apps Script Web App URL</label><input type="text" id="s-url"></div>
           <div class="ff" style="margin-bottom:16px"><label>Owner PIN</label><input type="password" id="s-pin" maxlength="4"></div>
@@ -387,300 +351,324 @@ tr:hover td{background:#fafeff}
             <button class="btn btn-primary" onclick="saveSettings()">Save</button>
             <button class="btn btn-ghost" onclick="testConn()">Test connection</button>
           </div>
-          <div id="s-status" style="margin-top:10px;font-size:12px;color:#666;min-height:18px"></div>
+          <div id="s-status" style="margin-top:10px;font-size:12px;color:#666;min-height:16px"></div>
         </div>
       </div>
 
-    </div><!-- /main -->
-  </div><!-- /layout -->
-</div><!-- /app -->
-
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────
-const CFG_KEY = 'pm_config';
-let CFG = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
-let USER = null;
-let JOBS = [];
-let CLIENTS = [];
+const CFG_KEY='pm_config_v2';
+let CFG={url:"__APPS_SCRIPT_URL__",pin:"__OWNER_PIN__",apiKey:"__API_KEY__"};
+let USER=null;
+let JOBS=[],CLIENTS=[],INVOICES=[],STOCK=[],PRIORITY=[],COLOURSEP=[];
 
-// ── Boot ──────────────────────────────────────────────────────
-window.onload = () => {
-  if (!CFG.url) { showEl('setup-screen'); return; }
+window.onload=()=>{
+  if(!CFG.url){showEl('setup-screen');return;}
   showEl('login-screen');
-  document.getElementById('s-url').value = CFG.url || '';
-  document.getElementById('s-pin').value = CFG.pin || '';
+  document.getElementById('s-url').value=CFG.url||'';
+  document.getElementById('s-pin').value=CFG.pin||'';
 };
 
-function showEl(id) {
-  ['setup-screen','login-screen','app'].forEach(s => {
-    const el = document.getElementById(s);
-    el.style.display = (s === id) ? (s === 'app' ? 'flex' : 'flex') : 'none';
+function showEl(id){
+  ['setup-screen','login-screen','app'].forEach(s=>{
+    const el=document.getElementById(s);
+    if(s===id){el.style.display=s==='app'?'flex':'flex';if(s==='app')el.style.flexDirection='column';}
+    else el.style.display='none';
   });
-  if (id === 'app') document.getElementById('app').style.flexDirection = 'column';
 }
-
-// ── Setup ─────────────────────────────────────────────────────
-function showSetup() { showEl('setup-screen'); }
-
-function saveSetup() {
-  const url = document.getElementById('su-url').value.trim();
-  const pin = document.getElementById('su-pin').value.trim();
-  if (!url) { alert('Please paste the Apps Script URL'); return; }
-  CFG = { url, pin: pin || '1234' };
-  localStorage.setItem(CFG_KEY, JSON.stringify(CFG));
-  document.getElementById('s-url').value = url;
-  document.getElementById('s-pin').value = CFG.pin;
-  showEl('login-screen');
-  toast('Setup saved!');
+function showSetup(){showEl('setup-screen');}
+function saveSetup(){
+  const url=document.getElementById('su-url').value.trim();
+  const pin=document.getElementById('su-pin').value.trim();
+  if(!url){alert('Please paste the URL');return;}
+  CFG={url,pin:pin||'1234'};
+  localStorage.setItem(CFG_KEY,JSON.stringify(CFG));
+  document.getElementById('s-url').value=url;
+  document.getElementById('s-pin').value=CFG.pin;
+  showEl('login-screen');toast('Setup saved!');
 }
-
-// ── Auth ──────────────────────────────────────────────────────
-function togglePin() {
-  const isOwner = document.getElementById('ln-role').value === 'owner';
-  document.getElementById('pin-wrap').style.display = isOwner ? 'block' : 'none';
+function togglePin(){
+  document.getElementById('pin-wrap').style.display=
+    document.getElementById('ln-role').value==='owner'?'block':'none';
 }
-
-function doLogin() {
-  const name = document.getElementById('ln-name').value.trim();
-  const role = document.getElementById('ln-role').value;
-  const pin  = document.getElementById('ln-pin').value;
-  if (!name) { alert('Please enter your name'); return; }
-  if (role === 'owner' && pin !== (CFG.pin || '1234')) { alert('Incorrect PIN'); return; }
-  USER = { name, role };
-  document.getElementById('user-chip').textContent = name + ' · ' + role;
-  document.querySelectorAll('.owner-only').forEach(el => {
-    el.style.display = role === 'owner' ? '' : 'none';
-  });
+function doLogin(){
+  const name=document.getElementById('ln-name').value.trim();
+  const role=document.getElementById('ln-role').value;
+  const pin=document.getElementById('ln-pin').value;
+  if(!name){alert('Enter your name');return;}
+  if(role==='owner'&&pin!==(CFG.pin||'1234')){alert('Wrong PIN');return;}
+  USER={name,role};
+  document.getElementById('user-chip').textContent=name+' · '+role;
+  document.querySelectorAll('.owner-only').forEach(el=>el.style.display=role==='owner'?'':'none');
   showEl('app');
   fetchJobs();
-  if (role === 'owner') fetchClients();
+  if(role==='owner'){fetchClients();fetchStock();}
+}
+function doLogout(){USER=null;JOBS=[];CLIENTS=[];showEl('login-screen');document.getElementById('ln-pin').value='';}
+
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  if(id==='jobs')fetchJobs();
+  if(id==='priority'){fetchPriority();}
+  if(id==='coloursep'){fetchColourSep();}
+  if(id==='challan')fillChallanSel();
+  if(id==='clients'){fetchClients();}
+  if(id==='invoices'){fetchInvoices();fillInvSelects();}
+  if(id==='stock'){fetchStock();}
+  if(id==='dash'){fetchDash();}
 }
 
-function doLogout() {
-  USER = null; JOBS = []; CLIENTS = [];
-  showEl('login-screen');
-  document.getElementById('ln-pin').value = '';
+function setSyncBadge(s){
+  const el=document.getElementById('sync-badge');
+  el.className='sync-badge '+(s==='ok'?'s-ok':s==='err'?'s-err':'s-ing');
+  el.textContent=s==='ok'?'● Synced':s==='err'?'● Error':'● Syncing…';
 }
-
-// ── Navigation ────────────────────────────────────────────────
-function go(id) {
-  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('active');
-  document.getElementById('nav-' + id).classList.add('active');
-  if (id === 'jobs')    fetchJobs();
-  if (id === 'challan') fillChallanSel();
-  if (id === 'clients') fetchClients();
-  if (id === 'dash')    renderDash();
-}
-
-// ── API ───────────────────────────────────────────────────────
-function setSyncBadge(s) {
-  const el = document.getElementById('sync-badge');
-  el.className = 'sync-badge ' + (s==='ok'?'s-ok':s==='err'?'s-err':'s-ing');
-  el.textContent = s==='ok'?'● Synced':s==='err'?'● Error':'● Syncing…';
-}
-
-async function api(action, data={}) {
-  if (!CFG.url) throw new Error('No API URL set');
+async function api(action,data={}){
+  if(!CFG.url)throw new Error('No API URL');
   setSyncBadge('ing');
-  const res = await fetch(CFG.url, {
-    method: 'POST',
-    headers: {'Content-Type':'text/plain'},
-    body: JSON.stringify({ action, ...data })
-  });
-  const json = await res.json();
-  if (json.status === 'ok') { setSyncBadge('ok'); return json; }
-  setSyncBadge('err');
-  throw new Error(json.message || 'API error');
+  const res=await fetch(CFG.url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,apiKey:CFG.apiKey,...data})});
+  const json=await res.json();
+  if(json.status==='ok'){setSyncBadge('ok');return json;}
+  setSyncBadge('err');throw new Error(json.message||'API error');
 }
 
-// ── Helpers ───────────────────────────────────────────────────
-const gv = id => document.getElementById(id)?.value || '';
-const gi = id => parseInt(document.getElementById(id)?.value) || 0;
-const gf = id => parseFloat(document.getElementById(id)?.value) || 0;
-const gc = id => document.getElementById(id)?.checked || false;
+const gv=id=>document.getElementById(id)?.value||'';
+const gi=id=>parseInt(document.getElementById(id)?.value)||0;
+const gf=id=>parseFloat(document.getElementById(id)?.value)||0;
+const gc=id=>document.getElementById(id)?.checked||false;
 
-function toast(msg, isErr) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'show' + (isErr ? ' err' : '');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.className = '', 3000);
+function toast(msg,isErr=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='show'+(isErr?' err':'');
+  clearTimeout(el._t);el._t=setTimeout(()=>el.className='',3200);
 }
 
-function fins(j) {
-  const t = v => v === true || v === 'TRUE';
-  return [t(j.lam)&&'LAM', t(j.uv)&&'UV', t(j.tex)&&'TEX',
-          t(j.foil)&&'FOIL', t(j.dc)&&'DC', t(j.fuli)&&'FULI',
-          t(j.pas)&&'PAS'].filter(Boolean).join(' ') || '—';
+function finsStr(j){
+  const t=v=>v===true||v==='TRUE';
+  return[t(j.lam)&&'LAM',t(j.uv)&&'UV',t(j.tex)&&'TEX',t(j.foil)&&'FOIL',t(j.dc)&&'DC',t(j.fuli)&&'FULI',t(j.pas)&&'PAS'].filter(Boolean).join(' ')||'—';
 }
 
-// ── Cost calc ─────────────────────────────────────────────────
-function calcCost() {
-  const qty=gi('j-qty'), l=gf('j-l'), w=gf('j-w'), gsm=gf('j-gsm');
-  const cf=gi('j-cf'), cb=gi('j-cb'), pord=gi('j-pord');
-  const lam=gc('fin-lam'), uv=gc('fin-uv');
-  const pap=gf('r-paper'), plt=gf('r-plate'), pf=gf('r-pf'), pb=gf('r-pb');
-  const lamR=gf('r-lam'), uvR=gf('r-uv');
-  const hand=parseFloat(gv('j-hand'))||0;
-  const el = document.getElementById('cost-preview');
-  if (!qty||!l||!w||!gsm) { el.innerHTML='<span style="color:#aaa">Fill in qty, size & GSM to see estimate</span>'; return null; }
+function calcCost(){
+  const qty=gi('j-qty'),l=gf('j-l'),w=gf('j-w'),gsm=gf('j-gsm');
+  const cf=gi('j-cf'),cb=gi('j-cb'),pord=gi('j-pord');
+  const lam=gc('fin-lam'),uv=gc('fin-uv');
+  const el=document.getElementById('cost-preview');
+  if(!qty||!l||!w||!gsm){el.innerHTML='<span style="color:#aaa">Fill in qty, size & GSM to see estimate</span>';return null;}
   const sheets=Math.round(qty*1.02);
-  const paper=Math.round((sheets*gsm/1000000)*pap);
-  const plates=(pord||(cf+cb))*plt;
-  const printF=Math.round((qty/1000)*pf);
-  const printB=Math.round((qty/1000)*pb);
+  const paper=Math.round((sheets*gsm/1000000)*gf('r-paper'));
+  const plates=(pord||(cf+cb))*gf('r-plate');
+  const printF=Math.round((qty/1000)*gf('r-pf'));
+  const printB=Math.round((qty/1000)*gf('r-pb'));
   const sqft=(l*w*qty)/(30.48*30.48);
-  const lamC=lam?Math.round(lamR*sqft):0;
-  const uvC=uv?Math.round(uvR*sqft):0;
-  const handC=Math.round(qty*hand);
+  const lamC=lam?Math.round(gf('r-lam')*sqft):0;
+  const uvC=uv?Math.round(gf('r-uv')*sqft):0;
+  const handC=Math.round(qty*(parseFloat(gv('j-hand'))||0));
   const total=paper+plates+printF+printB+lamC+uvC+handC;
   const exp=qty*(gi('j-ups')||1);
-  el.innerHTML=`
-    <div class="cost-line"><span>Paper (${sheets.toLocaleString()} sheets)</span><span>Rs ${paper.toLocaleString()}</span></div>
+  el.innerHTML=`<div class="cost-line"><span>Paper (${sheets.toLocaleString()} sheets)</span><span>Rs ${paper.toLocaleString()}</span></div>
     <div class="cost-line"><span>Plates + printing</span><span>Rs ${(plates+printF+printB).toLocaleString()}</span></div>
     ${(lamC||uvC)?`<div class="cost-line"><span>Finishing</span><span>Rs ${(lamC+uvC).toLocaleString()}</span></div>`:''}
     ${handC?`<div class="cost-line"><span>Hand work</span><span>Rs ${handC.toLocaleString()}</span></div>`:''}
     <div class="cost-line cost-total"><span>Total estimate</span><span>Rs ${total.toLocaleString()}</span></div>
-    <div style="font-size:12px;color:#999;margin-top:4px">Expected output: ${exp.toLocaleString()} pcs</div>`;
+    <div style="font-size:12px;color:#999;margin-top:3px">Expected output: ${exp.toLocaleString()} pcs</div>`;
   return total;
 }
 
-// ── Add job ───────────────────────────────────────────────────
-async function addJob() {
-  const name = gv('j-name').trim();
-  if (!name) { alert('Please enter an order name'); return; }
-  const btn = document.getElementById('save-btn');
-  const statusEl = document.getElementById('save-status');
-  btn.disabled = true; btn.textContent = 'Saving…';
-  const estCost = calcCost();
-  const qty = gi('j-qty');
-  const job = {
-    name, client:gv('j-client'), paper:gv('j-paper'), gsm:gf('j-gsm'),
-    l:gf('j-l'), w:gf('j-w'), qty, ups:gi('j-ups'),
-    cf:gi('j-cf'), cb:gi('j-cb'), no:gv('j-no'),
-    date:gv('j-date'), pord:gi('j-pord'), notes:gv('j-notes'),
-    hand:gv('j-hand'),
-    handLabel:document.getElementById('j-hand').selectedOptions[0].text,
-    lam:gc('fin-lam'), uv:gc('fin-uv'), tex:gc('fin-tex'),
-    foil:gc('fin-foil'), dc:gc('fin-dc'), fuli:gc('fin-fuli'), pas:gc('fin-pas'),
-    status:'Pending', expQty:qty*(gi('j-ups')||1),
-    estCost:estCost||'', addedBy:USER.name,
-    created:new Date().toLocaleDateString('en-GB')
+async function addJob(){
+  const name=gv('j-name').trim();
+  if(!name){alert('Enter an order name');return;}
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.textContent='Saving…';
+  const estCost=calcCost();
+  const qty=gi('j-qty');
+  const job={
+    name,client:gv('j-client'),paper:gv('j-paper'),gsm:gf('j-gsm'),
+    l:gf('j-l'),w:gf('j-w'),qty,ups:gi('j-ups'),cf:gi('j-cf'),cb:gi('j-cb'),
+    no:gv('j-no'),date:gv('j-date'),pord:gi('j-pord'),notes:gv('j-notes'),
+    hand:gv('j-hand'),handLabel:document.getElementById('j-hand').selectedOptions[0].text,
+    lam:gc('fin-lam'),uv:gc('fin-uv'),tex:gc('fin-tex'),foil:gc('fin-foil'),
+    dc:gc('fin-dc'),fuli:gc('fin-fuli'),pas:gc('fin-pas'),
+    priority:gv('j-priority'),status:'Pending',
+    expQty:qty*(gi('j-ups')||1),estCost:estCost||'',
+    addedBy:USER.name,created:new Date().toLocaleDateString('en-GB')
   };
-  try {
-    await api('addJob', { job });
-    toast('Job saved & synced to Google Sheets ✓');
-    statusEl.textContent = 'Saved at ' + new Date().toLocaleTimeString();
+  try{
+    await api('addJob',{job});
+    toast('Job saved & synced ✓ — colour sep & priority records auto-created');
+    document.getElementById('save-status').textContent='Saved at '+new Date().toLocaleTimeString();
     ['j-name','j-client','j-gsm','j-l','j-w','j-qty','j-ups','j-cf','j-cb','j-pord','j-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
     ['fin-lam','fin-uv','fin-tex','fin-foil','fin-dc','fin-fuli','fin-pas'].forEach(id=>{const e=document.getElementById(id);if(e)e.checked=false;});
     document.getElementById('j-hand').value='';
     document.getElementById('cost-preview').innerHTML='<span style="color:#aaa">Fill in qty, size & GSM to see estimate</span>';
     await fetchJobs();
-  } catch(e) { toast('Error: '+e.message, true); statusEl.textContent=''; }
-  finally { btn.disabled=false; btn.textContent='✓ Save job & sync to Google Sheets'; }
+  }catch(e){toast('Error: '+e.message,true);}
+  finally{btn.disabled=false;btn.textContent='✓ Save & sync to Google Sheets';}
 }
 
-// ── Jobs list ─────────────────────────────────────────────────
-async function fetchJobs() {
-  document.getElementById('jobs-area').innerHTML='<div class="empty"><div class="empty-icon">⏳</div>Loading jobs…</div>';
-  try {
-    const r = await api('getJobs');
-    JOBS = r.data || [];
-    renderJobs();
-    fillChallanSel();
-    populateClientDatalist();
-  } catch(e) { toast('Could not load jobs: '+e.message, true); document.getElementById('jobs-area').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div>Could not load. Check your connection.</div>'; }
+async function fetchJobs(){
+  document.getElementById('jobs-area').innerHTML='<div class="empty">Loading…</div>';
+  try{const r=await api('getJobs');JOBS=r.data||[];renderJobs();fillChallanSel();fillInvSelects();populateClientDatalist();}
+  catch(e){toast('Could not load jobs: '+e.message,true);}
 }
 
-function renderJobs() {
-  const sf = gv('f-status'), sq = gv('f-search').toLowerCase();
-  const list = JOBS.filter(j => {
-    if (sf && j.status !== sf) return false;
-    if (sq && !(j.name||'').toLowerCase().includes(sq) && !(j.client||'').toLowerCase().includes(sq)) return false;
+function renderJobs(){
+  const sf=gv('f-status'),sq=gv('f-search').toLowerCase();
+  const list=JOBS.filter(j=>(!sf||j.status===sf)&&(!sq||!(j.name||'').toLowerCase().includes(sq)===false||!(j.client||'').toLowerCase().includes(sq)===false));
+  const filtered=JOBS.filter(j=>{
+    if(sf&&j.status!==sf)return false;
+    if(sq&&!(j.name||'').toLowerCase().includes(sq)&&!(j.client||'').toLowerCase().includes(sq))return false;
     return true;
   });
-  const el = document.getElementById('jobs-area');
-  const isOwner = USER?.role === 'owner';
-  if (!list.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No jobs found</div>'; return; }
+  const el=document.getElementById('jobs-area');
+  const isOwner=USER?.role==='owner';
+  if(!filtered.length){el.innerHTML='<div class="empty">No jobs found</div>';return;}
   el.innerHTML=`<div class="tbl-wrap"><table>
-    <thead><tr>
-      <th>Order</th><th>Client</th><th>Qty</th><th>Exp pcs</th>
-      ${isOwner?'<th>Est cost</th>':''}
-      <th>Finishing</th><th>Delivery</th><th>By</th><th>Status</th>
-    </tr></thead>
-    <tbody>${list.map(j=>`<tr>
+    <thead><tr><th>Order</th><th>Client</th><th>Priority</th><th>Qty</th><th>Exp pcs</th>${isOwner?'<th>Est cost</th>':''}<th>Finishing</th><th>Delivery</th><th>By</th><th>Status</th></tr></thead>
+    <tbody>${filtered.map(j=>`<tr>
       <td><strong style="font-weight:600">${j.name||''}</strong><br><span style="font-size:11px;color:#999">${j.paper||''} ${j.gsm||''}g ${j.l||''}×${j.w||''}cm</span></td>
       <td>${j.client||'—'}</td>
+      <td><span class="badge b-${j.priority||'Normal'}">${j.priority||'Normal'}</span></td>
       <td>${(parseInt(j.qty)||0).toLocaleString()}</td>
       <td>${(parseInt(j.expQty)||0).toLocaleString()}</td>
       ${isOwner?`<td>${j.estCost?'Rs '+(parseInt(j.estCost)||0).toLocaleString():'—'}</td>`:''}
-      <td style="font-size:11px">${fins(j)}</td>
+      <td style="font-size:11px">${finsStr(j)}</td>
       <td style="white-space:nowrap">${j.date||'—'}</td>
       <td>${j.addedBy||'—'}</td>
-      <td><select class="status-sel" onchange="updateStatus('${j.id}',this.value)">
+      <td><select class="status-sel" onchange="updateJobStatus('${j.id}',this.value)">
         ${['Pending','Printing','Finishing','Done','Delivered'].map(s=>`<option ${j.status===s?'selected':''}>${s}</option>`).join('')}
       </select></td>
     </tr>`).join('')}</tbody></table></div>`;
 }
 
-async function updateStatus(id, status) {
-  try {
-    await api('updateJobStatus', { jobId:id, status });
-    const j = JOBS.find(x => x.id === id);
-    if (j) j.status = status;
-    toast('Status updated');
-  } catch(e) { toast('Error: '+e.message, true); }
+async function updateJobStatus(id,status){
+  try{await api('updateJobStatus',{jobId:id,status});const j=JOBS.find(x=>x.id===id);if(j)j.status=status;toast('Status updated');}
+  catch(e){toast('Error: '+e.message,true);}
 }
 
-// ── Challan ───────────────────────────────────────────────────
-function fillChallanSel() {
-  const sel = document.getElementById('ch-job');
-  sel.innerHTML = JOBS.map(j=>`<option value="${j.id}">${j.name}${j.client?' — '+j.client:''}</option>`).join('');
-  if (JOBS.length) renderChallan();
+// PRIORITY
+async function fetchPriority(){
+  document.getElementById('priority-area').innerHTML='<div class="empty">Loading…</div>';
+  try{const r=await api('getPriority');PRIORITY=r.data||[];renderPriority();}
+  catch(e){toast('Could not load priority: '+e.message,true);}
+}
+function renderPriority(){
+  const el=document.getElementById('priority-area');
+  const sorted=[...PRIORITY].sort((a,b)=>{
+    const order={Urgent:0,High:1,Normal:2,Low:3};
+    return (order[a.priority]||2)-(order[b.priority]||2);
+  });
+  if(!sorted.length){el.innerHTML='<div class="empty">No jobs in queue</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table>
+    <thead><tr><th>Priority</th><th>Job</th><th>Client</th><th>Due date</th><th>Status</th><th>Assigned to</th><th>Update</th></tr></thead>
+    <tbody>${sorted.map((r,i)=>`<tr>
+      <td><span class="badge b-${r.priority||'Normal'}">${r.priority||'Normal'}</span></td>
+      <td><strong style="font-weight:600">${r.jobName||''}</strong></td>
+      <td>${r.client||'—'}</td>
+      <td style="white-space:nowrap">${r.dueDate||'—'}</td>
+      <td><span class="badge b-${r.status||'Pending'}">${r.status||'Pending'}</span></td>
+      <td>${r.assignedTo||'—'}</td>
+      <td>
+        <select class="status-sel" onchange="updatePriority('${r.id}',this.value,'status')">
+          ${['Pending','Printing','Finishing','Done','Delivered'].map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+async function updatePriority(id,value,field){
+  try{
+    const rec=PRIORITY.find(r=>r.id===id);
+    if(rec){rec[field]=value;rec.updatedAt=new Date().toLocaleDateString('en-GB');}
+    await api('savePriority',{record:rec});
+    toast('Priority updated');
+  }catch(e){toast('Error: '+e.message,true);}
 }
 
-function renderChallan() {
-  const j = JOBS.find(x => x.id === gv('ch-job'));
-  if (!j) { document.getElementById('challan-out').innerHTML=''; return; }
-  const no = gv('ch-no') || 'CH-001';
-  const qty = parseInt(gv('ch-qty')) || parseInt(j.qty) || 0;
-  const today = new Date().toLocaleDateString('en-GB');
+// COLOUR SEP
+async function fetchColourSep(){
+  document.getElementById('coloursep-area').innerHTML='<div class="empty">Loading…</div>';
+  try{const r=await api('getColourSep');COLOURSEP=r.data||[];renderColourSep();}
+  catch(e){toast('Could not load colour sep: '+e.message,true);}
+}
+function renderColourSep(){
+  const el=document.getElementById('coloursep-area');
+  if(!COLOURSEP.length){el.innerHTML='<div class="empty">No colour sep records yet. Add a job first.</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table>
+    <thead><tr><th>Job</th><th>Client</th><th>C</th><th>M</th><th>Y</th><th>K</th><th>Special</th><th>Notes</th><th>Status</th><th>Done by</th><th>Save</th></tr></thead>
+    <tbody>${COLOURSEP.map(r=>`<tr>
+      <td><strong style="font-weight:600">${r.jobName||''}</strong></td>
+      <td>${r.client||'—'}</td>
+      <td><input type="number" value="${r.cyan||''}" id="cs-c-${r.id}" style="width:60px;padding:4px 6px"></td>
+      <td><input type="number" value="${r.magenta||''}" id="cs-m-${r.id}" style="width:60px;padding:4px 6px"></td>
+      <td><input type="number" value="${r.yellow||''}" id="cs-y-${r.id}" style="width:60px;padding:4px 6px"></td>
+      <td><input type="number" value="${r.black||''}" id="cs-k-${r.id}" style="width:60px;padding:4px 6px"></td>
+      <td><input type="text" value="${r.special||''}" id="cs-sp-${r.id}" style="width:80px;padding:4px 6px" placeholder="Pantone etc."></td>
+      <td><input type="text" value="${r.notes||''}" id="cs-n-${r.id}" style="width:100px;padding:4px 6px"></td>
+      <td><select class="status-sel" id="cs-st-${r.id}"><option ${r.status==='Pending'?'selected':''}>Pending</option><option ${r.status==='Done'?'selected':''}>Done</option></select></td>
+      <td><input type="text" value="${r.doneBy||''}" id="cs-db-${r.id}" style="width:80px;padding:4px 6px" placeholder="Name"></td>
+      <td><button class="btn btn-primary btn-sm" onclick="saveColourSepRow('${r.id}')">Save</button></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+async function saveColourSepRow(id){
+  const r=COLOURSEP.find(x=>x.id===id);
+  if(!r)return;
+  r.cyan=document.getElementById('cs-c-'+id)?.value||'';
+  r.magenta=document.getElementById('cs-m-'+id)?.value||'';
+  r.yellow=document.getElementById('cs-y-'+id)?.value||'';
+  r.black=document.getElementById('cs-k-'+id)?.value||'';
+  r.special=document.getElementById('cs-sp-'+id)?.value||'';
+  r.notes=document.getElementById('cs-n-'+id)?.value||'';
+  r.status=document.getElementById('cs-st-'+id)?.value||'Pending';
+  r.doneBy=document.getElementById('cs-db-'+id)?.value||'';
+  r.doneAt=r.status==='Done'?new Date().toLocaleDateString('en-GB'):'';
+  try{await api('saveColourSep',{record:r});toast('Colour sep saved ✓');}
+  catch(e){toast('Error: '+e.message,true);}
+}
+
+// CHALLAN
+function fillChallanSel(){
+  const sel=document.getElementById('ch-job');
+  sel.innerHTML=JOBS.map(j=>`<option value="${j.id}">${j.name}${j.client?' — '+j.client:''}</option>`).join('');
+  if(JOBS.length)renderChallan();
+}
+function renderChallan(){
+  const j=JOBS.find(x=>x.id===gv('ch-job'));
+  if(!j){document.getElementById('challan-out').innerHTML='';return;}
+  const no=gv('ch-no')||'CH-001';
+  const qty=parseInt(gv('ch-qty'))||parseInt(j.qty)||0;
+  const today=new Date().toLocaleDateString('en-GB');
   document.getElementById('challan-out').innerHTML=`
-  <div class="challan-wrap">
+  <div class="challan-doc">
     <div style="display:flex;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid #111">
-      <div><div style="font-size:22px;font-weight:800">Delivery Challan</div>
-        <div style="font-size:13px;color:#555;margin-top:2px">No: ${no} &nbsp;|&nbsp; Date: ${today}</div></div>
-      <div style="text-align:right"><div style="font-size:16px;font-weight:700">Your Print Business</div>
-        <div style="font-size:12px;color:#777">Kathmandu, Nepal</div></div>
+      <div><div style="font-size:22px;font-weight:800">Delivery Challan</div><div style="font-size:13px;color:#555;margin-top:2px">No: ${no} &nbsp;|&nbsp; Date: ${today}</div></div>
+      <div style="text-align:right"><div style="font-size:16px;font-weight:700">Your Print Business</div><div style="font-size:12px;color:#777">Kathmandu, Nepal</div></div>
     </div>
-    <div style="margin-bottom:1rem"><div style="font-size:12px;color:#777;margin-bottom:2px">Bill To</div>
-      <div style="font-size:16px;font-weight:700">${j.client||'—'}</div></div>
+    <div style="margin-bottom:1rem"><div style="font-size:12px;color:#777;margin-bottom:2px">Bill To</div><div style="font-size:16px;font-weight:700">${j.client||'—'}</div></div>
     <table style="border:1px solid #ccc;margin:1rem 0">
       <thead><tr style="background:#f4f5f7">
-        <th style="border:1px solid #ccc;padding:7px 10px">#</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">Description</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">Size</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">GSM</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">Sheets</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">Ups</th>
-        <th style="border:1px solid #ccc;padding:7px 10px">Total pcs</th>
+        <th style="border:1px solid #ccc;padding:6px 9px">#</th><th style="border:1px solid #ccc;padding:6px 9px">Description</th>
+        <th style="border:1px solid #ccc;padding:6px 9px">Size</th><th style="border:1px solid #ccc;padding:6px 9px">GSM</th>
+        <th style="border:1px solid #ccc;padding:6px 9px">Sheets</th><th style="border:1px solid #ccc;padding:6px 9px">Ups</th>
+        <th style="border:1px solid #ccc;padding:6px 9px">Total pcs</th>
       </tr></thead>
       <tbody><tr>
-        <td style="border:1px solid #ccc;padding:7px 10px">1</td>
-        <td style="border:1px solid #ccc;padding:7px 10px"><strong>${j.name||''}</strong><br><span style="font-size:11px;color:#777">${j.paper||''}${j.notes?' · '+j.notes:''}</span></td>
-        <td style="border:1px solid #ccc;padding:7px 10px">${j.l||''}×${j.w||''}cm</td>
-        <td style="border:1px solid #ccc;padding:7px 10px">${j.gsm||''}g</td>
-        <td style="border:1px solid #ccc;padding:7px 10px">${qty.toLocaleString()}</td>
-        <td style="border:1px solid #ccc;padding:7px 10px">${j.ups||1}</td>
-        <td style="border:1px solid #ccc;padding:7px 10px"><strong>${(qty*(parseInt(j.ups)||1)).toLocaleString()}</strong></td>
+        <td style="border:1px solid #ccc;padding:6px 9px">1</td>
+        <td style="border:1px solid #ccc;padding:6px 9px"><strong>${j.name||''}</strong><br><span style="font-size:11px;color:#777">${j.paper||''}${j.notes?' · '+j.notes:''}</span></td>
+        <td style="border:1px solid #ccc;padding:6px 9px">${j.l||''}×${j.w||''}cm</td>
+        <td style="border:1px solid #ccc;padding:6px 9px">${j.gsm||''}g</td>
+        <td style="border:1px solid #ccc;padding:6px 9px">${qty.toLocaleString()}</td>
+        <td style="border:1px solid #ccc;padding:6px 9px">${j.ups||1}</td>
+        <td style="border:1px solid #ccc;padding:6px 9px"><strong>${(qty*(parseInt(j.ups)||1)).toLocaleString()}</strong></td>
       </tr></tbody>
     </table>
     <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:1rem">
-      <div><strong>Finishing:</strong> ${fins(j)}</div>
+      <div><strong>Finishing:</strong> ${finsStr(j)}</div>
       <div><strong>Hand work:</strong> ${j.handLabel||j.hand||'—'}</div>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:3rem;font-size:13px">
@@ -689,105 +677,190 @@ function renderChallan() {
     </div>
   </div>`;
 }
-
-// ── Clients ───────────────────────────────────────────────────
-async function fetchClients() {
-  try {
-    const r = await api('getClients');
-    CLIENTS = r.data || [];
-    renderClients();
-    fillTxSel();
-    populateClientDatalist();
-  } catch(e) { toast('Could not load clients: '+e.message, true); }
+async function saveChallan(){
+  const j=JOBS.find(x=>x.id===gv('ch-job'));
+  if(!j){alert('Select a job');return;}
+  const qty=parseInt(gv('ch-qty'))||parseInt(j.qty)||0;
+  const challan={
+    jobId:j.id,jobName:j.name,client:j.client||'',
+    challanNo:gv('ch-no')||'CH-'+Date.now(),
+    qty,totalPcs:qty*(parseInt(j.ups)||1),
+    deliveryDate:new Date().toLocaleDateString('en-GB'),
+    receivedBy:gv('ch-recv'),notes:'',
+    createdBy:USER.name,createdAt:new Date().toLocaleDateString('en-GB')
+  };
+  try{await api('saveChallan',{challan});toast('Challan saved to Sheet ✓');}
+  catch(e){toast('Error: '+e.message,true);}
 }
 
-function populateClientDatalist() {
-  const dl = document.getElementById('cl-datalist');
-  if (dl) dl.innerHTML = CLIENTS.map(c=>`<option value="${c.name}">`).join('');
+// CLIENTS
+async function fetchClients(){
+  try{const r=await api('getClients');CLIENTS=r.data||[];renderClients();fillTxSelects();populateClientDatalist();}
+  catch(e){toast('Could not load clients: '+e.message,true);}
 }
-
-function fillTxSel() {
-  const sel = document.getElementById('tx-cl');
-  if (sel) sel.innerHTML = CLIENTS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+function populateClientDatalist(){
+  const dl=document.getElementById('cl-dl');
+  if(dl)dl.innerHTML=CLIENTS.map(c=>`<option value="${c.name}">`).join('');
 }
-
-async function saveClient() {
-  const name = gv('cl-name').trim();
-  if (!name) { alert('Enter a client name'); return; }
-  try {
-    await api('saveClient', { client:{ name, phone:gv('cl-phone'), balance:gf('cl-bal'), btype:gv('cl-btype') }});
+function fillTxSelects(){
+  const sel=document.getElementById('inv-cl');
+  if(sel)sel.innerHTML=CLIENTS.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+}
+function fillInvSelects(){
+  fillTxSelects();
+  const jsel=document.getElementById('inv-job');
+  if(jsel)jsel.innerHTML='<option value="">— none —</option>'+JOBS.map(j=>`<option value="${j.id}">${j.name}</option>`).join('');
+}
+async function saveClient(){
+  const name=gv('cl-name').trim();
+  if(!name){alert('Enter a client name');return;}
+  try{
+    await api('saveClient',{client:{name,phone:gv('cl-phone'),email:gv('cl-email'),address:gv('cl-addr'),openingBalance:gf('cl-bal'),btype:gv('cl-btype'),notes:''}});
     toast('Client saved');
-    ['cl-name','cl-phone','cl-bal'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    ['cl-name','cl-phone','cl-email','cl-addr','cl-bal'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
     await fetchClients();
-  } catch(e) { toast('Error: '+e.message, true); }
+  }catch(e){toast('Error: '+e.message,true);}
+}
+function renderClients(){
+  const el=document.getElementById('clients-area');
+  const su=document.getElementById('client-summary');
+  if(!el)return;
+  if(!CLIENTS.length){el.innerHTML='<div class="empty">No clients yet</div>';return;}
+  const out=CLIENTS.filter(c=>c.btype==='credit').reduce((s,c)=>s+(parseFloat(c.balance)||0),0);
+  if(su)su.innerHTML=`<div class="g2" style="gap:8px">
+    <div class="metric"><div class="metric-label">Total clients</div><div class="metric-value">${CLIENTS.length}</div></div>
+    <div class="metric"><div class="metric-label">Outstanding</div><div class="metric-value" style="color:#854F0B;font-size:18px">Rs ${Math.round(out).toLocaleString()}</div></div>
+  </div>`;
+  el.innerHTML=`<div class="tbl-wrap"><table>
+    <thead><tr><th>Client</th><th>Phone</th><th>Email</th><th>Balance</th></tr></thead>
+    <tbody>${CLIENTS.map(c=>`<tr>
+      <td><strong style="font-weight:600">${c.name||''}</strong></td>
+      <td>${c.phone||'—'}</td><td>${c.email||'—'}</td>
+      <td><span class="badge ${(parseFloat(c.balance)||0)>0?'b-credit':'b-clear'}">Rs ${Math.round(parseFloat(c.balance)||0).toLocaleString()} ${(parseFloat(c.balance)||0)>0?'due':'clear'}</span></td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
 
-async function saveTx() {
-  const clientId = gv('tx-cl'), amt = gf('tx-amt');
-  if (!clientId||!amt) { alert('Select a client and enter amount'); return; }
-  try {
-    await api('saveTx', { tx:{ clientId, amt, type:gv('tx-type'), note:gv('tx-note'), date:gv('tx-date')||new Date().toLocaleDateString('en-GB'), addedBy:USER.name }});
-    toast('Transaction saved');
-    ['tx-amt','tx-note'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-    await fetchClients();
-  } catch(e) { toast('Error: '+e.message, true); }
+// INVOICES
+async function fetchInvoices(){
+  try{const r=await api('getInvoices');INVOICES=r.data||[];renderInvoices();}
+  catch(e){toast('Could not load invoices: '+e.message,true);}
+}
+async function saveInvoice(){
+  const clientId=gv('inv-cl');const amt=gf('inv-amt');
+  if(!clientId||!amt){alert('Select a client and enter amount');return;}
+  const cl=CLIENTS.find(c=>c.id===clientId);
+  const job=JOBS.find(j=>j.id===gv('inv-job'));
+  const inv={
+    clientId,clientName:cl?.name||'',
+    jobId:gv('inv-job')||'',jobName:job?.name||'',
+    type:gv('inv-type'),amount:amt,
+    notes:gv('inv-notes'),date:gv('inv-date')||new Date().toLocaleDateString('en-GB'),
+    addedBy:USER.name
+  };
+  try{
+    await api('saveInvoice',{invoice:inv});
+    toast('Invoice saved & balance updated ✓');
+    ['inv-amt','inv-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+    await fetchClients();await fetchInvoices();
+  }catch(e){toast('Error: '+e.message,true);}
+}
+function renderInvoices(){
+  const el=document.getElementById('invoices-area');
+  const re=document.getElementById('inv-recent');
+  if(!INVOICES.length){if(el)el.innerHTML='';if(re)re.innerHTML='<div class="empty">No transactions yet</div>';return;}
+  const recent=INVOICES.slice(0,5);
+  if(re)re.innerHTML=recent.map(r=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f2f3f5;font-size:13px">
+    <div><strong style="font-weight:500">${r.clientName||'—'}</strong><span style="color:#999;font-size:11px;margin-left:6px">${r.type}</span></div>
+    <div style="font-weight:600;color:${r.type==='payment'?'#3b6d11':'#854F0B'}">Rs ${(parseInt(r.amount)||0).toLocaleString()}</div>
+  </div>`).join('');
+  if(el)el.innerHTML=`<div class="tbl-wrap"><table>
+    <thead><tr><th>Date</th><th>Client</th><th>Job</th><th>Type</th><th>Amount</th><th>Notes</th><th>By</th></tr></thead>
+    <tbody>${INVOICES.map(r=>`<tr>
+      <td style="white-space:nowrap">${r.date||'—'}</td>
+      <td>${r.clientName||'—'}</td><td>${r.jobName||'—'}</td>
+      <td><span class="badge ${r.type==='payment'?'b-clear':'b-credit'}">${r.type}</span></td>
+      <td style="font-weight:600">Rs ${(parseInt(r.amount)||0).toLocaleString()}</td>
+      <td>${r.notes||'—'}</td><td>${r.addedBy||'—'}</td>
+    </tr>`).join('')}</tbody></table></div>`;
 }
 
-function renderClients() {
-  const el = document.getElementById('clients-area');
-  if (!el) return;
-  if (!CLIENTS.length) { el.innerHTML='<div class="empty"><div class="empty-icon">👤</div>No clients yet</div>'; return; }
-  const outstanding = CLIENTS.filter(c=>c.btype==='credit').reduce((s,c)=>s+(parseFloat(c.balance)||0),0);
+// STOCK
+async function fetchStock(){
+  try{const r=await api('getStock');STOCK=r.data||[];renderStock();fillStockSel();}
+  catch(e){toast('Could not load stock: '+e.message,true);}
+}
+function fillStockSel(){
+  const sel=document.getElementById('adj-item');
+  if(sel)sel.innerHTML=STOCK.map(s=>`<option value="${s.id}">${s.item} (${s.currentQty} ${s.unit})</option>`).join('');
+}
+async function saveStockItem(){
+  const name=gv('st-name').trim();
+  if(!name){alert('Enter item name');return;}
+  const openQty=gf('st-openqty');
+  const item={item:name,category:gv('st-cat'),unit:gv('st-unit'),openingQty:openQty,currentQty:openQty,reorderLevel:gf('st-reorder'),notes:gv('st-notes'),lastUpdated:new Date().toLocaleDateString('en-GB')};
+  try{await api('saveStock',{item});toast('Stock item saved');['st-name','st-openqty','st-reorder','st-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});await fetchStock();}
+  catch(e){toast('Error: '+e.message,true);}
+}
+async function adjustStock(){
+  const itemId=gv('adj-item');const qty=gf('adj-qty');const op=gv('adj-op');
+  if(!itemId||!qty){alert('Select item and enter quantity');return;}
+  try{const r=await api('adjustStock',{itemId,qty,op});toast('Stock updated — new qty: '+r.newQty);await fetchStock();}
+  catch(e){toast('Error: '+e.message,true);}
+}
+function renderStock(){
+  const el=document.getElementById('stock-area');
+  if(!STOCK.length){el.innerHTML='<div class="empty">No stock items yet</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table>
+    <thead><tr><th>Item</th><th>Category</th><th>Unit</th><th>Current qty</th><th>Reorder level</th><th>Status</th><th>Last updated</th></tr></thead>
+    <tbody>${STOCK.map(s=>{
+      const isLow=(parseFloat(s.currentQty)||0)<=(parseFloat(s.reorderLevel)||0);
+      return`<tr>
+        <td><strong style="font-weight:600">${s.item||''}</strong>${s.notes?`<br><span style="font-size:11px;color:#999">${s.notes}</span>`:''}</td>
+        <td>${s.category||'—'}</td><td>${s.unit||'—'}</td>
+        <td style="font-weight:600">${s.currentQty||0}</td>
+        <td>${s.reorderLevel||0}</td>
+        <td>${isLow?'<span class="badge b-low-stock">Low stock</span>':'<span class="badge b-clear">OK</span>'}</td>
+        <td>${s.lastUpdated||'—'}</td>
+      </tr>`;}).join('')}</tbody></table></div>`;
+}
+
+// DASHBOARD
+async function fetchDash(){
+  document.getElementById('dash-area').innerHTML='<div class="empty">Loading…</div>';
+  try{const r=await api('getDashboard');renderDash(r.data);}
+  catch(e){toast('Could not load dashboard: '+e.message,true);}
+}
+function renderDash(d){
+  const el=document.getElementById('dash-area');
+  const bs=d.byStatus||{};
+  const total=d.totalJobs||0;
   el.innerHTML=`
-    <div class="grid3" style="margin-bottom:1rem">
-      <div class="metric"><div class="metric-label">Total clients</div><div class="metric-value">${CLIENTS.length}</div></div>
-      <div class="metric"><div class="metric-label">Total outstanding</div><div class="metric-value" style="color:#854F0B;font-size:20px">Rs ${Math.round(outstanding).toLocaleString()}</div></div>
-    </div>
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>Client</th><th>Phone</th><th>Balance</th><th>Type</th></tr></thead>
-      <tbody>${CLIENTS.map(c=>`<tr>
-        <td><strong style="font-weight:600">${c.name||''}</strong></td>
-        <td>${c.phone||'—'}</td>
-        <td><span class="badge ${(parseFloat(c.balance)||0)>0?'b-credit':'b-clear'}">Rs ${Math.round(parseFloat(c.balance)||0).toLocaleString()} ${(parseFloat(c.balance)||0)>0?'due':'clear'}</span></td>
-        <td>${c.btype||'—'}</td>
-      </tr>`).join('')}</tbody>
-    </table></div>`;
-}
-
-// ── Dashboard ─────────────────────────────────────────────────
-function renderDash() {
-  const el = document.getElementById('dash-area');
-  const total = JOBS.length;
-  const bs = {Pending:0,Printing:0,Finishing:0,Done:0,Delivered:0};
-  JOBS.forEach(j=>{if(bs[j.status]!==undefined)bs[j.status]++;});
-  const sheets = JOBS.reduce((s,j)=>s+(parseInt(j.qty)||0),0);
-  const outstanding = CLIENTS.filter(c=>c.btype==='credit').reduce((s,c)=>s+(parseFloat(c.balance)||0),0);
-  el.innerHTML=`
-    <div class="grid4">
+    <div class="g4" style="margin-bottom:1rem">
       <div class="metric"><div class="metric-label">Total jobs</div><div class="metric-value">${total}</div></div>
-      <div class="metric"><div class="metric-label">In production</div><div class="metric-value">${bs.Printing+bs.Finishing}</div></div>
-      <div class="metric"><div class="metric-label">Ready to deliver</div><div class="metric-value">${bs.Done}</div></div>
-      <div class="metric"><div class="metric-label">Outstanding (Rs)</div><div class="metric-value" style="color:#854F0B;font-size:20px">${Math.round(outstanding).toLocaleString()}</div></div>
+      <div class="metric"><div class="metric-label">In production</div><div class="metric-value">${(bs.Printing||0)+(bs.Finishing||0)}</div></div>
+      <div class="metric"><div class="metric-label">Overdue</div><div class="metric-value" style="color:#a32d2d">${d.overdueJobs||0}</div></div>
+      <div class="metric"><div class="metric-label">Outstanding (Rs)</div><div class="metric-value" style="color:#854F0B;font-size:18px">${Math.round(d.totalOutstanding||0).toLocaleString()}</div></div>
     </div>
-    <div class="grid2">
+    <div class="g4" style="margin-bottom:1rem">
+      <div class="metric"><div class="metric-label">Colour sep pending</div><div class="metric-value">${d.colourSepPending||0}</div></div>
+      <div class="metric"><div class="metric-label">Low stock alerts</div><div class="metric-value" style="${(d.lowStock||0)>0?'color:#a32d2d':''}">${d.lowStock||0}</div></div>
+      <div class="metric"><div class="metric-label">Ready to deliver</div><div class="metric-value" style="color:#3b6d11">${bs.Done||0}</div></div>
+      <div class="metric"><div class="metric-label">Total clients</div><div class="metric-value">${d.totalClients||0}</div></div>
+    </div>
+    <div class="g2">
       <div class="card">
         <div class="card-title">Jobs by status</div>
-        ${Object.entries(bs).map(([s,n])=>`
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px">
-            <span style="width:80px;font-size:13px">${s}</span>
-            <div style="flex:1;background:#f0f0f0;border-radius:4px;height:8px;overflow:hidden">
-              <div style="height:8px;background:#185fa5;border-radius:4px;width:${total?Math.round(n/total*100):0}%"></div>
-            </div>
-            <span style="font-size:13px;min-width:20px;text-align:right;font-weight:600">${n}</span>
-          </div>`).join('')}
-        <div style="font-size:12px;color:#999;margin-top:6px">Total sheets: ${sheets.toLocaleString()}</div>
+        ${Object.entries(bs).map(([s,n])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="width:80px;font-size:13px">${s}</span>
+          <div style="flex:1;background:#f0f0f0;border-radius:4px;height:8px;overflow:hidden"><div style="height:8px;background:#185fa5;border-radius:4px;width:${total?Math.round(n/total*100):0}%"></div></div>
+          <span style="font-size:13px;min-width:20px;text-align:right;font-weight:600">${n}</span>
+        </div>`).join('')}
       </div>
       <div class="card">
         <div class="card-title">Top outstanding clients</div>
         ${CLIENTS.filter(c=>(parseFloat(c.balance)||0)>0&&c.btype==='credit')
-          .sort((a,b)=>(parseFloat(b.balance)||0)-(parseFloat(a.balance)||0))
-          .slice(0,6).map(c=>`
-          <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f2f3f5">
+          .sort((a,b)=>(parseFloat(b.balance)||0)-(parseFloat(a.balance)||0)).slice(0,6)
+          .map(c=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f2f3f5">
             <span style="font-size:13px">${c.name}</span>
             <span style="font-size:13px;font-weight:700;color:#854F0B">Rs ${Math.round(parseFloat(c.balance)||0).toLocaleString()}</span>
           </div>`).join('')||'<div style="color:#aaa;font-size:13px">No outstanding balances</div>'}
@@ -795,20 +868,17 @@ function renderDash() {
     </div>`;
 }
 
-// ── Settings ──────────────────────────────────────────────────
-async function saveSettings() {
-  CFG.url = gv('s-url').trim();
-  CFG.pin = gv('s-pin').trim();
-  localStorage.setItem(CFG_KEY, JSON.stringify(CFG));
-  document.getElementById('s-status').textContent = 'Saved at ' + new Date().toLocaleTimeString();
+// SETTINGS
+async function saveSettings(){
+  CFG.url=gv('s-url').trim();CFG.pin=gv('s-pin').trim();
+  localStorage.setItem(CFG_KEY,JSON.stringify(CFG));
+  document.getElementById('s-status').textContent='Saved at '+new Date().toLocaleTimeString();
   toast('Settings saved');
 }
-
-async function testConn() {
-  const el = document.getElementById('s-status');
-  el.textContent = 'Testing…';
-  try { await api('ping'); el.textContent = '✓ Connected successfully!'; el.style.color='#3b6d11'; }
-  catch(e) { el.textContent = '✗ Failed: ' + e.message; el.style.color='#a32d2d'; }
+async function testConn(){
+  const el=document.getElementById('s-status');el.textContent='Testing…';
+  try{await api('ping');el.textContent='✓ Connected!';el.style.color='#3b6d11';}
+  catch(e){el.textContent='✗ '+e.message;el.style.color='#a32d2d';}
 }
 </script>
 </body>
