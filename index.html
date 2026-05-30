@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f5f7;color:#222;font-size:14px;min-height:100vh}
-#login-screen,#setup-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f0f2f5}
 .auth-box{background:#fff;border:1px solid #dde1e7;border-radius:12px;padding:2.5rem 2rem;width:380px}
 .auth-box h1{font-size:20px;font-weight:700;margin-bottom:4px}
 .auth-box .sub{font-size:13px;color:#666;margin-bottom:1.5rem}
@@ -84,18 +84,6 @@ tr:hover td{background:#fafeff}
 </style>
 </head>
 <body>
-
-<div id="setup-screen">
-  <div class="auth-box">
-    <div style="font-size:26px;margin-bottom:8px">🖨️</div>
-    <h1>Print Manager Setup</h1>
-    <div class="sub">One-time setup — paste your Google Apps Script URL</div>
-    <div class="ff" style="margin-bottom:10px"><label>Apps Script Web App URL</label><input type="text" id="su-url" placeholder="https://script.google.com/macros/s/..."></div>
-    <div class="ff" style="margin-bottom:16px"><label>Owner PIN (4 digits)</label><input type="password" id="su-pin" placeholder="e.g. 1234" maxlength="4"></div>
-    <button class="btn btn-primary" style="width:100%;padding:11px" onclick="saveSetup()">Save &amp; continue →</button>
-  </div>
-</div>
-
 <div id="login-screen">
   <div class="auth-box">
     <div style="font-size:26px;margin-bottom:8px">🖨️</div>
@@ -105,7 +93,7 @@ tr:hover td{background:#fafeff}
     <div class="ff" style="margin-bottom:10px"><label>Role</label><select id="ln-role" onchange="togglePin()"><option value="employee">Employee</option><option value="owner">Owner</option></select></div>
     <div id="pin-wrap" class="ff" style="display:none;margin-bottom:14px"><label>Owner PIN</label><input type="password" id="ln-pin" maxlength="4" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="btn btn-primary" style="width:100%;padding:11px;margin-bottom:10px" onclick="doLogin()">Sign in →</button>
-    <div style="text-align:center"><a href="#" style="font-size:12px;color:#aaa;text-decoration:none" onclick="showSetup()">⚙ Change API URL</a></div>
+    
   </div>
 </div>
 
@@ -362,35 +350,22 @@ tr:hover td{background:#fafeff}
 
 <script src="config.js"></script>
 <script>
-const CFG_KEY='pm_config_v2';
 let CFG=window.PM_CONFIG||{};
 let USER=null;
 let JOBS=[],CLIENTS=[],INVOICES=[],STOCK=[],PRIORITY=[],COLOURSEP=[];
 
 window.onload=()=>{
-  if(!CFG.url){showEl('setup-screen');return;}
   showEl('login-screen');
-  document.getElementById('s-url').value=CFG.url||'';
-  document.getElementById('s-pin').value=CFG.pin||'';
+  if(document.getElementById('s-url')) document.getElementById('s-url').value=CFG.url||'';
+  if(document.getElementById('s-pin')) document.getElementById('s-pin').value=CFG.pin||'';
 };
 
 function showEl(id){
-  ['setup-screen','login-screen','app'].forEach(s=>{
+  ['login-screen','app'].forEach(s=>{
     const el=document.getElementById(s);
     if(s===id){el.style.display=s==='app'?'flex':'flex';if(s==='app')el.style.flexDirection='column';}
     else el.style.display='none';
   });
-}
-function showSetup(){showEl('setup-screen');}
-function saveSetup(){
-  const url=document.getElementById('su-url').value.trim();
-  const pin=document.getElementById('su-pin').value.trim();
-  if(!url){alert('Please paste the URL');return;}
-  CFG={url,pin:pin||'1234'};
-  localStorage.setItem(CFG_KEY,JSON.stringify(CFG));
-  document.getElementById('s-url').value=url;
-  document.getElementById('s-pin').value=CFG.pin;
-  showEl('login-screen');toast('Setup saved!');
 }
 function togglePin(){
   document.getElementById('pin-wrap').style.display=
@@ -872,7 +847,6 @@ function renderDash(d){
 // SETTINGS
 async function saveSettings(){
   CFG.url=gv('s-url').trim();CFG.pin=gv('s-pin').trim();
-  localStorage.setItem(CFG_KEY,JSON.stringify(CFG));
   document.getElementById('s-status').textContent='Saved at '+new Date().toLocaleTimeString();
   toast('Settings saved');
 }
