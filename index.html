@@ -408,14 +408,24 @@ function setSyncBadge(s){
   el.className='sync-badge '+(s==='ok'?'s-ok':s==='err'?'s-err':'s-ing');
   el.textContent=s==='ok'?'● Synced':s==='err'?'● Error':'● Syncing…';
 }
-async function api(action,data={}){
-  if(!CFG.url)throw new Error('No API URL');
-  setSyncBadge('ing');
-  const payload=encodeURIComponent(JSON.stringify({action,apiKey:CFG.apiKey,...data}));
-  const res=await fetch(CFG.url+'?data='+payload,{redirect:'follow'});
-  const json=await res.json();
-  if(json.status==='ok'){setSyncBadge('ok');return json;}
-  setSyncBadge('err');throw new Error(json.message||'API error');
+function api(action,data={}){
+  return new Promise((resolve,reject)=>{
+    if(!CFG.url){reject(new Error('No API URL'));return;}
+    setSyncBadge('ing');
+    const cb='_pm'+Date.now();
+    const payload=encodeURIComponent(JSON.stringify({action,apiKey:CFG.apiKey,...data}));
+    const s=document.createElement('script');
+    const t=setTimeout(()=>{cleanup();setSyncBadge('err');reject(new Error('Timeout'));},30000);
+    function cleanup(){clearTimeout(t);delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);}
+    window[cb]=(json)=>{
+      cleanup();
+      if(json.status==='ok'){setSyncBadge('ok');resolve(json);}
+      else{setSyncBadge('err');reject(new Error(json.message||'API error'));}
+    };
+    s.onerror=()=>{cleanup();setSyncBadge('err');reject(new Error('Script load error'));};
+    s.src=CFG.url+'?callback='+cb+'&data='+payload;
+    document.head.appendChild(s);
+  });
 }
 
 const gv=id=>document.getElementById(id)?.value||'';
