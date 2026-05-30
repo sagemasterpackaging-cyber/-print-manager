@@ -412,7 +412,7 @@ async function api(action,data={}){
   if(!CFG.url)throw new Error('No API URL');
   setSyncBadge('ing');
   const payload=encodeURIComponent(JSON.stringify({action,apiKey:CFG.apiKey,...data}));
-  const res=await fetch(CFG.url+'?data='+payload);
+  const res=await fetch(CFG.url+'?data='+payload,{redirect:'follow'});
   const json=await res.json();
   if(json.status==='ok'){setSyncBadge('ok');return json;}
   setSyncBadge('err');throw new Error(json.message||'API error');
