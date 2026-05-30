@@ -360,9 +360,10 @@ tr:hover td{background:#fafeff}
 </div>
 <div id="toast"></div>
 
+<script src="config.js"></script>
 <script>
 const CFG_KEY='pm_config_v2';
-let CFG={url:"https://script.google.com/macros/s/AKfycbxd9j7t8Khdvm8jWziAeXbrtsrHJ8i_dgNBCZtkPk3tL1-3wy8qRJJ1YC5PD6oUYMYxhA/exec",pin:"1270",apiKey:"pm-k9x2mq7wnb4r"};
+let CFG=window.PM_CONFIG||{};
 let USER=null;
 let JOBS=[],CLIENTS=[],INVOICES=[],STOCK=[],PRIORITY=[],COLOURSEP=[];
 
