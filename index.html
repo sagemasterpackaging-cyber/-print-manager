@@ -185,14 +185,17 @@ tr:hover td{background:#fafeff}
             </div>
           </div>
           <div>
-            <div class="card">
+            <div class="card owner-only" id="cost-card">
               <div class="card-title">Cost estimate (auto)</div>
               <div class="frow"><div class="ff"><label>Paper (Rs/kg)</label><input type="number" id="r-paper" value="130" oninput="calcCost()"></div><div class="ff"><label>Plate (Rs)</label><input type="number" id="r-plate" value="1500" oninput="calcCost()"></div></div>
               <div class="frow"><div class="ff"><label>Print front (Rs/1000)</label><input type="number" id="r-pf" value="900" oninput="calcCost()"></div><div class="ff"><label>Print back (Rs/1000)</label><input type="number" id="r-pb" value="450" oninput="calcCost()"></div></div>
               <div class="frow"><div class="ff"><label>LAM (Rs/sqft)</label><input type="number" id="r-lam" value="3" oninput="calcCost()"></div><div class="ff"><label>UV (Rs/sqft)</label><input type="number" id="r-uv" value="2" oninput="calcCost()"></div></div>
               <div id="cost-preview" class="cost-box"><span style="color:#aaa">Fill in qty, size &amp; GSM to see estimate</span></div>
             </div>
-            <button class="btn btn-primary" id="save-btn" style="width:100%;padding:12px;font-size:14px" onclick="addJob()">✓ Save &amp; sync to Google Sheets</button>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" id="save-btn" style="flex:1;padding:12px;font-size:14px" onclick="addJob()">✓ Save &amp; sync to Google Sheets</button>
+              <button class="btn btn-ghost" style="padding:12px 14px;font-size:16px" onclick="window.print()" title="Print job">🖨</button>
+            </div>
             <div id="save-status" style="text-align:center;font-size:12px;color:#888;margin-top:7px;min-height:16px"></div>
           </div>
         </div>
