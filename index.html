@@ -348,7 +348,9 @@ tr:hover td{background:#fafeff}
 </div>
 <div id="toast"></div>
 
-<script src="config.js"></script>
+<script>
+window.PM_CONFIG={url:"__APPS_SCRIPT_URL__",apiKey:"__API_KEY__",pin:"__OWNER_PIN__"};
+</script>
 <script>
 let CFG=window.PM_CONFIG||{};
 let USER=null;
