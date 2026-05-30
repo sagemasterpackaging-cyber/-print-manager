@@ -408,14 +408,23 @@ function setSyncBadge(s){
   el.className='sync-badge '+(s==='ok'?'s-ok':s==='err'?'s-err':'s-ing');
   el.textContent=s==='ok'?'● Synced':s==='err'?'● Error':'● Syncing…';
 }
-async function api(action,data={}){
-  if(!CFG.url)throw new Error('No API URL');
-  setSyncBadge('ing');
-  const payload=encodeURIComponent(JSON.stringify({action,apiKey:CFG.apiKey,...data}));
-  const res=await fetch(CFG.url+'?data='+payload,{redirect:'follow'});
-  const json=await res.json();
-  if(json.status==='ok'){setSyncBadge('ok');return json;}
-  setSyncBadge('err');throw new Error(json.message||'API error');
+function api(action,data={}){
+  return new Promise((resolve,reject)=>{
+    if(!CFG.url){reject(new Error('No API URL'));return;}
+    setSyncBadge('ing');
+    const payload=encodeURIComponent(JSON.stringify({action,apiKey:CFG.apiKey,...data}));
+    const xhr=new XMLHttpRequest();
+    xhr.open('GET',CFG.url+'?data='+payload,true);
+    xhr.onload=()=>{
+      try{
+        const json=JSON.parse(xhr.responseText);
+        if(json.status==='ok'){setSyncBadge('ok');resolve(json);}
+        else{setSyncBadge('err');reject(new Error(json.message||'API error'));}
+      }catch(e){setSyncBadge('err');reject(new Error('Invalid response'));}
+    };
+    xhr.onerror=()=>{setSyncBadge('err');reject(new Error('Network error'));};
+    xhr.send();
+  });
 }
 
 const gv=id=>document.getElementById(id)?.value||'';
